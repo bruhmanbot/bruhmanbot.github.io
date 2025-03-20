@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <title>Losing Tiles</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  /Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  /projects</button></a>
+        </nav>
+    </div>
+
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Losing Tiles</h2>
+        <p>In this section I will present the statistics I gathered for the losing tiles to see which tiles
+            are the most common (and by how much).
+        </p>
+    </div>
+
+    <div>
+        <h2>The results<button id="exp_btn">Expand</button></h2>
+        <div class="expand-on-clk" id="occ-tbl">
+            <p>Occurences of different tiles as the losing/last tile:</p>
+        </div>
+
+        <div class="graph" id="occ-graph"></div>
+
+        <p>As expected we see very little losses with lucky tiles as compared to normal tiles. While with the normal
+            tiles, we see a concentration on tiles 2-7, with slightly fwer 8 tiles and nearly half as much 1/9 tiles as compared
+            to the 2-7 tiles. I am unsure of what 8 tiles are not as common as the 2 tile. Mahjong tiles are symmetrical in nature,
+            we should expect to see a symmetrical distrubution here. Although I have implemented randomisation to sometimes
+            get the bot to favour the larger tiles, it seems as if this solution is insufficient to completely weed out
+            the bias.
+        </p>
+
+        <p>Contrary to my initial belief, the 3/7 tiles were not the most popular. My further analysis on this came
+            to the following conclusion: since edge straights are not valued as much by the bots, this only leaves 1
+            possible open straight for the 3/7 tiles, (3 -> 4/5, and 7 -> 5/6) whereas the middle tiles (4/5/6) both
+            have 2 possible open straights, leading to their high popularity.
+        </p>
+    </div>
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+</body>
+<!--Charting-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script src="../scripts/losing.js" type="module"></script>
+</html>
+

@@ -1,0 +1,15 @@
+{
+    "Introduction": "index.html",
+    "Hand valuation": "hand-val.html",
+    "Valuation chart": "val-chart.html",
+    "Opening": "opening.html",
+    "Drawing Tiles": "drawing.html",
+    "Stats": "drawing-stats.html",
+    "Specialty hands": "specialty-hands.html",
+    "Computer play": "cpu-play.html",
+    "Game distrubution": "game-dist.html",
+    "Losing tiles": "losing-tiles.html",
+    "Defense": "defense.html",
+    "Weights": "weights.html",
+    "Afterword": "afterword.html"
+}

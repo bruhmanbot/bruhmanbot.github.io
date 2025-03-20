@@ -1,0 +1,195 @@
+body {
+    margin-top: 8vh; /*Allow space for the navbar */
+}
+a {
+    text-decoration: underline;
+    color: var(--txt-primary-color);
+}
+
+div{
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+
+.nav-div{
+    margin: 0;
+}
+
+h2 {
+    line-height: 60%;
+    text-decoration: underline;
+}
+
+p {
+    text-align: justify;
+}
+
+div div{
+    margin:0;
+}
+
+li {
+    text-align: justify;
+    line-height: 160%;
+}
+
+.mj-tile-entry-button, .mj-tile-display, .mj-tile-disp-button {
+    width: fit-content;
+    height: auto;
+    padding: 0;
+    transition: all 0.1s linear;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mj-tile-disp-button{
+    border: none;
+}
+
+.mj-tile-display tr{
+    background: linear-gradient(72deg, var(--highlight2), var(--highlight1));
+}
+.mj-tile-display td{
+    padding: 0.25vw;
+}
+
+.mj-tile-entry-button{
+    padding: 0.25vw;
+}
+
+
+.mj-tile-entry-button img, .mj-tile-display img{
+    position: relative;
+    top: 0.3vh;
+    margin: 0;
+    height: 4vw;
+    border: none;
+}
+
+.mj-tile-disp-button:hover{
+    cursor: not-allowed;
+    background-color: transparent;
+    border: none;
+}
+
+.caption {
+    line-height: 0;
+    font-style: italic;
+    font-size: 80%;
+    margin: 1vw
+}
+
+.end-of-content-bar {
+    width: auto;
+    border-top: 2px var(--txt-primary-color) solid;
+    margin-top: 3vh;
+    margin-bottom: 3vh;
+}
+
+.resultsTable{
+    border-spacing: 0;
+    text-align: left;
+    /* centre the table */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.resultsTable td{
+    border: 0.15vw var(--txt-primary-color) solid;
+    border-spacing: 0;
+    padding: 0.75vw;
+}
+
+.code{
+    background-color: var(--highlight1);
+    font-family: monospace;
+    border: 1px white solid;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.expand-on-clk {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+.graph{
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    aspect-ratio: 4/3;
+    margin-bottom: 4vh;
+    align-content: center;
+}
+
+.flowchart {
+    width: 75%;
+    background-color: var(--highlight1);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tileDisplay td{
+    padding: 0vw;
+    border: none;
+}
+
+.tileDisplay {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+#bottom-nav {
+    display: block;
+    width: auto;
+    margin-bottom: 10vh;
+    height: fit-content;
+}
+
+#h3_left, #h4_left{
+    float: left;
+    margin: 0;
+}
+
+#h3_right{
+    float: right;
+    text-align: right;
+    margin: 0;
+}
+
+#h4_left{
+    position: relative;
+    right:6vw;
+    top: 1vh;
+    float:left;
+}
+#h4_right{
+    position: relative;
+    left:3.3vw;
+    top: 1vh;
+    float:right;
+    text-align: right;
+    margin: 0;
+}
+
+#exp_btn, #expandButton, .exp_btn{
+    /*Shift the button to the right by 1em -- create some sort of margin between expand buttons and the heading(s)*/
+    position: relative;
+    left:1em;
+}
+
+.centre {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+
+

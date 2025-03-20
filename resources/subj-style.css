@@ -1,0 +1,62 @@
+body {
+    margin-top: 8vh;
+}
+
+div{
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+
+div table{
+    width: 80vw;
+    padding: 0;
+    border: 0px;
+    border-spacing: 0;
+}
+
+div table tr{
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+div table tr:hover{
+    background-color: var(--lowlight);
+}
+
+
+div table td{
+    text-align: left;
+    padding: 1vh;
+    border: 0px;
+    height: fit-content;
+    vertical-align: middle;
+}
+
+table a{
+    text-decoration: none;
+    color: var(--txt-primary-color);
+}
+
+table a:hover {
+    color: var(--highlight2);
+}
+
+.tbl_header {
+    font-weight: 600;
+    font-size: 1.2em;
+    vertical-align: middle;
+    background: linear-gradient(45deg, var(--highlight1), var(--highlight2));
+}
+
+.sort-button {
+    transition: all 0.2s linear;
+    height: 1em;
+    padding: 0.1em;
+    margin-left: 0.4em;
+}
+
+.sort-button:hover {
+    background-color: var(--txt-primary-color);
+    border-radius: 1000vw;
+}

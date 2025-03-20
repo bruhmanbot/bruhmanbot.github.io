@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <link href="../styles/cpu.css" rel="stylesheet">
+    <title>Computer play</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  ./Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  ./projects</button></a>
+        </nav>
+    </div>
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Computer play</h2>
+        <p>Now we will integrate everything we have found out to create a basic 4-player AI. Since we already have pre-exising code
+            to determine which tile to throw given a hand and relevant information of the game, the only elements that need to be created from 
+            scratch will be the pong and up(chow) mechanics.
+        </p>
+        <p>Generally, when we get the chance to take a tile from others, we will take it in order to progress our hand. However,
+            we must note that take tiles from others results in information given to others. Hence, if a tile from others does not
+            provide significant progress, taking it just results in giving others a more favourable position. (Unless if you are counting the
+            bluff factor)
+        </p>
+    </div>
+
+    <div>
+        <h2>Evaluating up/chow</h2>
+        <p>The question of whether to do it is quite straightforward to answer. We consider a situation where we have taken a tile and have made
+            the subsequent discard. Then we calculate the inital and final hand scores to see if there was an increase.
+        </p>
+
+        <div class="centred">
+            <h3>Discarded tile</h3>
+            <table id="24" class="resultsTable"></table>
+        </div>
+
+        <div class="samples-div">
+            <table class="hand">
+                <th>
+                    <td>Outside(Displayed)<br>
+                        Inside</td>
+                    <td>Score</td>
+                    <td>Discards</td>
+                </th>
+                <tr>
+                    <td>
+                        <p class="caption">Sample1</p>
+                    </td>
+
+                    <td>
+                        <table id="sample1-o"></table>
+                        <table id="sample1-i"></table>
+                    </td>
+                    <td>8.5</td>
+                    <td>
+                        <table id="sample1-d"></table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="caption">Sample1-after</p>
+                    </td>
+
+                    <td>
+                        <table id="sample1-ao"></table>
+                        <table id="sample1-ai"></table>
+                    </td>
+                    <td>10</td>
+                </tr>
+            </table>
+        </div>
+        <p>For sample 1, yoinking this tile is a no-brainer, but the same cannot be said for sample 2 below.</p>
+
+        <div class="samples-div">
+            <table class="hand">
+                <th>
+                    <td>Outside(Displayed)<br>
+                        Inside</td>
+                    <td>Score</td>
+                    <td>Discards</td>
+                </th>
+                <tr>
+                    <td>
+                        <p class="caption">Sample2</p>
+                    </td>
+
+                    <td>
+                        <table id="sample2-o"></table>
+                        <table id="sample2-i"></table>
+                    </td>
+                    <td>8.5</td>
+                    <td>
+                        <table id="sample2-d"></table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="caption">Sample2-after</p>
+                    </td>
+
+                    <td>
+                        <table id="sample2-ao"></table>
+                        <table id="sample2-ai"></table>
+                    </td>
+                    <td>8.5</td>
+                </tr>
+            </table>
+        <p>Here we can see chow-ing / upping does not provide any progress, hence, the algorithm will let the chance go in order to provide less intel to other players,
+            as well as to keep more options for future tiles. The calculation for drawing depends on how many tiles of a type have came out, both in discards,
+            as well as displayed tiles, providing more information via displayed tiles only improves the play of other players.
+        </p>
+
+        </div>
+    </div>
+
+    <div>
+        <h2>How to up</h2>
+        <p>Now that we have solved the problem of necessity, we examine the best method we can go about taking tiles from others. Again, the method we go about this is quite
+            simple, we commit to the chow using our least useful partial set, let's look at the below example.
+        </p>
+
+        <div class="centred">
+            <h3>Discarded tile</h3>
+            <table id="17" class="resultsTable"></table>
+        </div>
+        <div class="samples-div">
+            <table>
+                <tr>
+                    <td>
+                        Sample3
+                    </td>
+                    <td>
+                        <table id="sample3-o"></table>
+                        <table id="sample3-i"></table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>We evaluate the two partial sets that we have, and we can easily see that using the discard 17 to complete the '17-18-19' set is advantageous since 
+            it leaves open more tiles for the remaining '15-16' set. Generally, this means for upping, we prioritise edge straights and holes over open straights,
+            which is quite natural for normal play as well.
+        </p>
+        <table class="resultsTable">
+            <tr>
+                <td>Partial set</td>
+                <td><table id='lowps'></table></td>
+                <td><table id='highps'></table></td>
+            </tr>
+            <tr>
+                <td>subsequent useful tiles<br>(for the leftover set)</td>
+                <td><table id='lowps-u'></table></td>
+                <td><table id='highps-u'></table></td>
+            </tr>
+        </table>
+
+        <p>As for pairs, its basically just the first part of this process since there is only 1 partial set to consider here. The final distinction we have to make
+            is whether to up or pong when given both choices. The answer is simple, we always up since we can get the pong from anyone, we can save it for later with less risk
+            of missing the last tile as opposed to keeping a straight.
+        </p>
+    </div>
+
+    <div>
+        <h2>Flowchart</h2>
+        <p>Finally here is a flowchart to sum up everything in this (shorter) section.</p>
+        <div class="flowchart">
+            <iframe frameborder="0" style="width:100%;height:334px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=discard_pong_up_flow.svg#R%3Cmxfile%3E%3Cdiagram%20name%3D%22Page-1%22%20id%3D%22l18IOiq4V67_AK8dVUgR%22%3E7Vxdd6M2EP01frQPEsYfj9nE7j5stzlNu20eZZBBW0BUiNjeX18JhAELEhJj49PlxaARCDEz92qkQR6Z98H%2BF4Yi71fqYH8EDWc%2FMh9GEEJrMRcHKTlkkgVcZAKXEScTgULwRH5gJTSUNCEOjisXckp9TqKq0KZhiG1ekSHG6K562Zb61adGyMWa4MlGvi79izjcU29hGYX8Myaulz8ZGKomQPnFShB7yKG7kshcjcx7RinPzoL9Pfal8nK9ZPetG2qPHWM45G1uiJ5n3%2Bf022p7GG9%2FN759TuY4Gk%2BzVl6Qn6gXVp3lh1wD2BEKUUXKuEddGiJ%2FVUg%2FMZqEDpaPMUSpuOYLpZEQAiH8jjk%2FKOuihFMh8njgq9otDfkaBcSXTvLnJgl5oqRPNGG2vMnjXFgcWuad%2BBHvKH%2FkBfHEpdT1MYpIPLFpkFbYcXrpepu1KU5PWs06AuSzs%2FeVL9moVyWK8740KTP3T8RczF%2B5Dh6tL2CDaYA5E500GPYRJy%2FVfiDlv%2B7xusLE4kRZ%2BR0WB5rFn0SHuWb2knkcFHtH8%2B48wvFThFJN7ATohUy4diSLwd6VLDBxts4kTlu9Bdu%2BYMbx%2FnXr6tZQN4xnCr6Kv8wczrsSGyiRVyIC07iQ%2FeYDYrtDLGyJ2FmfiIWaxf8gwopiTCWxjZi0oxjYmNSkETH8QmgSy1MfHTDTnCPHqlAX8n3sUwHZQGg1woyI%2Foo7Tuoei4pa8Je9guxxPobfhpechf1T6AM4sTTwg2kN%2BqfWhXxhOaC%2FO%2FTPWqJ%2F0Sf6TR3%2BzyIgrrP6F7QR0XfFUsgnbijObaGcFMESEESEt3eqIiCOkzkFjskPtEnbk24RUSKsJRu3Po2sh5uweg2aVdyvOl5E22V%2FaEZS87BvTKAFYAX%2FORG3trtq%2FVFqstQ0rN5Bt9sYc81Pjn06I9SbDWxxfbYAVq90oc%2FovtKBLc5lC9AQAZboYgmmVboA59HF5flBp4evNByHeM9L4aPhUd8hoTuCM1%2FO5xzyUvGl2b8Jzed54zg1gjCnAUC0Ty2R14szVx5Rqm7C8vZEz9Mms1rNU5lHg42IZ9%2BOPW%2FR39rHmscJo%2FIeuDAn85pos26uCYxjYNr9coEefgxjyIfHkEXbMaTBWa4zhiw0k6%2FkOeJy0rmT1iMhlgrshhHoVmqTFhTzBiUcZ7CM2rIbb1LDBtn%2FuKkL%2FpZwX%2FT9ZpzqPMqwrAplAEtfmgJmDV%2FMLrU2Ba0%2BuEGoix3%2BlvcLFlTFZ9VcWnjYV0oHVerf%2FN2sOhstSQWafZJK3s0Sq9zTICD8CH4DhXIly%2FZQ6GIVgYgDZc5ry1g%2FOQnMjWrcUEsC1jVJAJhDxNAhutsmlYBR7ydXQrc%2B7RxWqUYdzDsbOLuYdwJjMavOHEY3Pu3MXbrkK4%2FZAJDGlprT%2FCxTQAueUPm0hsphDZUvLhbP6WP2QOUfp3KrLZXP%2B6RyU88wD1TeAZXDhgG6oPLpYrmoMMC5GYfLc3lOCANDXJUhmkaSKzFE3cLxQBBnEwR8iyAgmC9vnRFyHy47x2UzCuJJxMkUzAmSHUxfbUgvlGNLcJJeWLb8kuVisSUYPmXpcuSYt40te%2F2YBeix5Zqkq34bHPMqhjlDqRvCdZYuHBYAG5BdzQJMQe9ZgFkfQG7KAhzr%2FudZgLapxZ6zAHpu8TQ6sNOsQGfZxSy3sE4i8WN7dDckGd9FL6f5hVp6uWp%2BAQ57VjrkDdg2v9Avb0B9zfiUNxyGdvoy1YDjehybRs0E4Lo41oeCAccfx7HZFse9Li7n3SwZ%2Fc5OH1tCMlZfG8ldLF76UcAA6lpQL28O1OaQMeoS1G1n9bBhN8OVQK3P6jVQz1AgMRlu4igLzjsJ7tUOuLhYQODp1rghxH8HixR71m%2BGRqC%2BOLiqGQeGPcr58s7VNimLYvGXBVnOoPjjB3P1Hw%3D%3D%3C%2Fdiagram%3E%3C%2Fmxfile%3E"></iframe>
+        </div>
+
+        <p>This control flow is implemented into a program to create a simple command line program to simulate real 4-player Taiwanese mahjong games. In addition,
+            by specifying a human player and requiring user inputs at appropriate times, we have created mahjong on the command line, or command line interface mahjong -- <i>cli-mj</i>.
+        </p>
+    </div>
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+</body>
+<script src="../scripts/cpu.js" type="module"></script>
+</html>

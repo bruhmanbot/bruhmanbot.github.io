@@ -1,0 +1,10 @@
+.compact {
+    width: 80%;
+    overflow: auto;
+}
+
+.highlightbox{
+    border: 0.15vw var(--highlight2) solid;
+    padding: 1vh;
+    width: fit-content;
+}

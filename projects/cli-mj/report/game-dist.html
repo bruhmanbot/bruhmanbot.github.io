@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+
+    <title>Game Distrubution</title>
+</head>
+
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  /Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  /projects</button></a>
+        </nav>
+    </div>
+
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Game Distrubution</h2>
+        <p>This section examines the results generated using the script from the last section. We will cover the following items:</p>
+        <ul>
+            <li>Distrubution of length of games</li>
+            <li>Winning Hands</li>
+            <li>Stats regarding winners and losers</li>
+        </ul>
+    </div>
+    <div>
+        <h2>Length of games <button id="exp_btn">Expand</button></h2>
+        <div class="expand-on-clk" id="game-length-table-div">
+            <p>Results for game length, taken over a sample size of 40000 games:</p>
+        </div>
+
+        <p>Graph of games ended against tiles used. Here tiles used is defined as tiles 
+            taken from the deck since the start of the game (i.e. after everyone has drawn their first 16/17 tiles)</p>
+        <div class="graph" id="game-length-graph"></div>
+        <p>We can see that the distrubution spikes at around 40 tiles, which is further supported by the mean of this figure.
+            The mean tiles used to end a game is 40.9 tiles, meaning that on average, after each player discards around 10 tiles,
+            over half of Taiwanese Mahjong games would have ended. We can further fit our data to a 
+            <abbr title="Probability Density Function">PDF</abbr>, and consequently a <abbr title="Cumalative Density Function">CDF</abbr>. 
+            With the asymmetrical shape of the curve, a gamma distrubution was chosen.
+        </p>
+    </div>
+    <div>
+        <h2>Gamma Distrubution<button class="exp_btn" id="exp_btn2">Expand</button></h2>
+        <div class="expand-on-clk" id="gamma-tbl"></div>
+        <p>The gamma distrubution is defined as follows</p>
+        <div>
+            $$p(x) = \frac{1}{\Gamma(k)\theta^k} x^{k-1} e^{-\frac{x}{\theta}}$$
+            where
+            $$\text{Mean} = \bar{x} = k\theta$$
+        </div>
+        <p>After plotting the curve and adjusting the value of the parameters <i>k</i> and <i>&theta;</i>.
+            The two values were evntually settled on:
+        </p>
+        <div>
+            $$k = 9.6 \text{ and } \theta = 4.26 $$
+        </div>
+        <p>The obtained PDF is then re-plotted on the same graph with the raw data, only with the number of total games
+            multiplied with the predicted probabilty. The below graph is obtained.
+        </p>
+        <div class="graph" id="gamma-fit-graph"></div>
+        <p>We can also do the same with the CDF graph.</p>
+        <div class="graph" id="cdf-fit-graph"></div>
+        <p>While this seems like a statistical observation for now, these figures will soon become handy when we calculate
+            the losing chance of a tile since game length is a factor that affects it.
+        </p>
+    </div>
+
+    <div>
+        <h2>Winning Hands</h2>
+        <p>Here I will just show the occurences of different scores over the 40000 game sample above. 
+            <button class="exp_btn" id="exp_btn3">Expand</button></p>
+        <div class="expand-on-clk" id="score-tbl">
+        </div>
+        <div class="graph" id="score-graph"></div>
+        <div class="graph" id="score-cum-graph"></div>
+        <p>As expected, this distrubution is highly asymmetrical, with most data skewing towards the low end, just like a normal
+            mahjong game where high scoring hands are very rare. Looking at the cumalative chart, we find the median of the distrubution to be 13,
+            while the mean sits higher at around 19 points. Observant readers may be able to notice small spikes at 48-50 points and 58-60 points,
+            this is mainly due to the two speciality hands - LiguLigu and 16不搭, being a significantly more common method to gaurantee scores at these ranges.
+            Finally, let's take a look at some of the highest scoring hands.
+        </p>
+    </div>
+
+    <div>
+        <h2>Some high scoring hands</h2>
+        <p>Although flowers are included in the game, for simplicity I will not show them here. (also partly because I didn't record them
+            to save space)
+        </p>
+        <table class="resultsTable">
+            <tr>
+                <td>Score</td>
+                <td>Outside Hand<br>Inside Hand</td>
+                <td>Winning Tile</td>
+            </tr>
+            <tr>
+                <td>170<br>(self drawn)</td>
+                <td>(empty)<br><table class="tileDisplay" id="170hand"></table></td>
+                <td><table class="tileDisplay" id='170handw'></table></td>
+            </tr>
+            <tr>
+                <td>129</td>
+                <td>(empty)<br><table class='tileDisplay' id='129hand'></table></td>
+                <td><table class='tileDisplay' id='129handw'></table></td>
+            </tr>
+            <tr>
+                <td>122</td>
+                <td><table class="tileDisplay" id="122hando"></table><br>
+                    <table class="tileDisplay" id="122hand"></table></td>
+                <td><table class="tileDisplay" id="122handw"></table></td>
+            </tr>
+            <tr>
+                <td>164</td>
+                <td>(empty)<br>
+                    <table class="tileDisplay" id="164hand"></table></td>
+                <td><table class="tileDisplay" id="164handw"></table></td>
+            </tr>
+            <tr>
+                <td>91</td>
+                <td>(empty)<br>
+                    <table class="tileDisplay" id="91hand"></table></td>
+                <td><table class="tileDisplay" id="91handw"></table></td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h2>Winners and Losers</h2>
+        <p>Originally I wanted to only examine the average game length and average scores. However, using a pivot table,
+            I was able to get data on the amount of times each user won (or lost). This was from an older dataset with only 10000
+            games that I discarded due to discovering some bugs in my score counting algorithm. Still its size is sufficient to display
+            my findings. In the below game(s), all the games following the following playing order: p4 (dealer) &#x2192; p1 &#x2192; p2
+            &#x2192; p3 &#x2192; p4 &#x2192; ...
+        </p>
+        <table class="resultsTable">
+            <th>
+                <td colspan="1000" style="text-align: center;">Loser (discarded from)</td>
+            </th>
+            <tr>
+                <td rowspan="1000">Winner</td>
+                <td></td>
+                <td>p1</td>
+                <td>p2</td>
+                <td>p3</td>
+                <td>p4</td>
+                <td>Total</td>
+            </tr>
+            <tr>
+                <td>p1</td>
+                <td>574</td>
+                <td>735</td>
+                <td>690</td>
+                <td>658</td>
+                <td>2657</td>
+            </tr>
+            <tr>
+                <td>p2</td>
+                <td>622</td>
+                <td>517</td>
+                <td>647</td>
+                <td>631</td>
+                <td>2417</td>
+            </tr>
+            <tr>
+                <td>p3</td>
+                <td>650</td>
+                <td>541</td>
+                <td>500</td>
+                <td>701</td>
+                <td>2392</td>
+            </tr>
+            <tr>
+                <td>p4</td>
+                <td>727</td>
+                <td>680</td>
+                <td>648</td>
+                <td>620</td>
+                <td>2675</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>2573</td>
+                <td>2473</td>
+                <td>2485</td>
+                <td>2610</td>
+                <td></td>
+            </tr>
+        </table>
+        <p>The horizontal rows correspond to the winner, and the vertical row corresponds to the loser. For instance,
+            there have been 658 games won by p1 where the winning tile was discarded by p4. The main diagonal corresponds to
+            number of self-drawn victories. So we can see that p3 won by self-drawing 500 times.
+        </p>
+        <p>We can see the biggest outlier being p4, the dealer, with a staggering 620 times winning by self-drawing the last 
+            tile. Knowing that all 4 players share the exact same skill, the only difference is that p4 is the dealer, i.e. the first
+            to play. Hence, we can conclude that the dealer is the most favourable to win any given mahjong game. Another observation
+            we can see is that each player loses to the previous player the most (with the exception of p3 here), by not an insignificant
+            margin. My reasoning for this is mainly due to ups provided by the previous player. When the previous player discards a useful Tile
+            for the next player to up, the next player is more likely to throw out a dangerous tile. Since this is mainly controlled by the
+            previous player, he/she can be said to be the biggest beneficiary from this.
+        </p>
+        <p>For a set of control data, here are the results from another 16000 game sample, in this set of data, the dealer rotates after
+            every game.
+        </p>
+        <table class="resultsTable">
+            <th>
+                <td colspan="1000" style="text-align: center;">Loser (discarded from)</td>
+            </th>
+            <tr>
+                <td rowspan="1000">Winner</td>
+                <td></td>
+                <td>p1</td>
+                <td>p2</td>
+                <td>p3</td>
+                <td>p4</td>
+                <td>Total</td>
+            </tr>
+            <tr>
+                <td>p1</td>
+                <td>924</td>
+                <td>1067</td>
+                <td>1053</td>
+                <td>932</td>
+                <td>3976</td>
+            </tr>
+            <tr>
+                <td>p2</td>
+                <td>987</td>
+                <td>977</td>
+                <td>1074</td>
+                <td>1021</td>
+                <td>4059</td>
+            </tr>
+            <tr>
+                <td>p3</td>
+                <td>1075</td>
+                <td>1000</td>
+                <td>959</td>
+                <td>1115</td>
+                <td>4149</td>
+            </tr>
+            <tr>
+                <td>p4</td>
+                <td>1026</td>
+                <td>1035</td>
+                <td>982</td>
+                <td>933</td>
+                <td>3976</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>4012</td>
+                <td>4079</td>
+                <td>4068</td>
+                <td>4001</td>
+                <td></td>
+            </tr>
+        </table>
+        <p>Here we see a more evenly distrubuted pattern of wins across the 4 players, indicating that the dealer advantage
+            dicussed above is indeed real. However, we can still spot that each player generally loses the most to the previous
+            player, a repeatedly occuring pattern across this dataset (and all others).
+        </p>
+    </div>
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+</body>
+<!--Charting-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script src="../scripts/game-dist.js" type="module"></script>
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

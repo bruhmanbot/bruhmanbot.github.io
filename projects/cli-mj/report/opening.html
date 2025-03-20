@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <link href="../styles/opening.css" rel="stylesheet">
+    <title>Opening</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  ./Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  ./projects</button></a>
+        </nav>
+    </div>
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Opening</h2>
+        <p>Using our previous model, we will measure the "goodness" of our opening hands that we receive. This will provide key statistics
+            as to what hands can be considered "good". In our simulation, 136 tiles (without flowers) are loaded into a deck and shuffled with
+            Python's random shuffle function. The resulting 16-tile hand is ran through a hand score counter, like the one displayed on the previous page. In total,
+            100k samples were taken and the results are shown below. Note that the max score you can attain with 16 tiles is 10.0 (5 sets of 3) while the winning
+            score (5 sets + 1 eye pair) is 10.5.
+        </p>
+    </div>
+        
+    <div class="results-div">
+        <h2>Results<button id="expandButton">Expand</button></h2>
+        
+        <div id="expandable">
+            <table class='resultsTable'>
+                <tr>
+                    <td>Opening Score</td>
+                    <td>Occurences</td>
+                    <td>Opening Score</td>
+                    <td>Occurences</td>
+                </tr>
+                <tr>
+                    <td>0.25</td>
+                    <td>0</td>
+                    <td>5.25</td>
+                    <td>3932</td>
+                </tr>
+                <tr>
+                    <td>0.5</td>
+                    <td>10</td>
+                    <td>5.5</td>
+                    <td>2688</td>
+                </tr>
+                <tr>
+                    <td>0.75</td>
+                    <td>77</td>
+                    <td>5.75</td>
+                    <td>643</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>398</td>
+                    <td>6</td>
+                    <td>592</td>
+                </tr>
+                <tr>
+                    <td>1.25</td>
+                    <td>1264</td>
+                    <td>6.25</td>
+                    <td>529</td>
+                </tr>
+                <tr>
+                    <td>1.5</td>
+                    <td>2993</td>
+                    <td>6.5</td>
+                    <td>1013</td>
+                </tr>
+                <tr>
+                    <td>1.75</td>
+                    <td>4886</td>
+                    <td>6.75</td>
+                    <td>515</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>6048</td>
+                    <td>7</td>
+                    <td>486</td>
+                </tr>
+                <tr>
+                    <td>2.25</td>
+                    <td>5614</td>
+                    <td>7.25</td>
+                    <td>59</td>
+                </tr>
+                <tr>
+                    <td>2.5</td>
+                    <td>4516</td>
+                    <td>7.5</td>
+                    <td>34</td>
+                </tr>
+                <tr>
+                    <td>2.75</td>
+                    <td>4216</td>
+                    <td>7.75</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>6535</td>
+                    <td>8</td>
+                    <td>61</td>
+                </tr>
+                <tr>
+                    <td>3.25</td>
+                    <td>9442</td>
+                    <td>8.25</td>
+                    <td>18</td>
+                </tr>
+                <tr>
+                    <td>3.5</td>
+                    <td>11263</td>
+                    <td>8.5</td>
+                    <td>27</td>
+                </tr>
+                <tr>
+                    <td>3.75</td>
+                    <td>8964</td>
+                    <td>8.75</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>6107</td>
+                    <td>9</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>4.25</td>
+                    <td>2997</td>
+                    <td>9.25</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>4.5</td>
+                    <td>3647</td>
+                    <td>9.5</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>4.75</td>
+                    <td>4525</td>
+                    <td>9.75</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>5.0</td>
+                    <td>5901</td>
+                    <td>10.0</td>
+                    <td>0</td>
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+
+    <div>
+        <p>You may be able to spot that there is 0 occurences for 7.75, this is because it is impossible to get 3 completed sets (=6 points) plus 3x0.5 points partial sets and
+            another 1x0.25 partial set. If you add up the tiles required, you will get 17 tiles, which is an impossible number for the first draw. We can then plot our results in
+            the two following graphs.
+        </p>
+
+        <div class="chart" id="occurenceChart"></div>
+        <div class="chart" id="cumChart"></div>
+    </div>
+
+    <div>
+        <p>From the first graph, it is apparent that most opening hands are concentrated at the range of 2-5 points, with the mode being at 3.5 points.
+            Any hand beyond 6 points has a very very low chance of appearing. From the cumalative graph, which provides more useful insights, we can see the median
+            is around 3.3 points. Therefore, it can be said, statistically, if your starting hand has more than 3.25 points, your hand is officially above median.
+            The average (not shown in graphs) is calculated to be around 3.51 points, which is a fair bit higher than the median, but this is to be expected due to the
+            non-symmetical distrubution of mahjong hands.
+        </p>
+
+        <p>This thus gives us the bottom line - If your hand has more than 3.5 points, it is better than average; If your hand has more than 3.25 points, it is better than the median.
+            Furthermore, to be the top 1% of mahjong hands, your hand will need to have more than 6.5 points at the very beginning.
+        </p>
+    </div>
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+
+</body>
+
+<!--Charting-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script src="../scripts/openingDataCharts.js" type="module"></script>
+
+</html>

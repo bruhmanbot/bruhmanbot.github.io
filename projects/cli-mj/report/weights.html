@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <link href="../styles/weights.css" rel="stylesheet">
+    <title>Weights</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+
+    <nav>
+        <a href="/"><span class="icon">..ico</span></a>
+        <a href="/resources/"><button><img src="/media/file.png" height="16vh">  /Files</button></a>
+        <a href="/projects/"><button><img src="/media/file.png" height="16vh">  /projects</button></a>
+    </nav>
+    </div>
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Weights</h2>
+        <p>In the final section, we will adjust the losing weight of our model to examine a good place
+            for our bot(s). For this section, we pit our supercharged bot with 3 other normal bots using
+            just the basic speed model from before. Due to the large amount of data used, where around
+            1 million mahjong games were played in this section, I only kept the aggregated data for each weight
+            to save on space and computation power. You can download the raw data below.
+        </p>
+        <!--CHANGE THIS LINK LATER-->
+        <a href="foo.json">Placeholder for download lk</a>
+    </div>
+
+    <div>
+        <h2>Plots</h2>
+        <div class="graph" id="wins-graph"></div>
+        <div class="graph" id="loss-graph"></div>
+        <div class="graph" id="tsumo-graph"></div>
+        <div class="graph" id="ratio-graph"></div>
+    </div>
+    <div>
+        <p>From the above 4 charts, we can get the following findings:
+        <ul>
+        <li>
+            Wins increase as the weight goes towards 0 from the negative numbers. Into the positive numbers, the wins decrease.
+        </li>
+        <li>
+            Losses slowly increase as we turn from the negatives to 0. Then there was a sharp increase at 0, followed
+            by another slow but steady increase as we go into the positives.
+        </li>
+        <li>
+            Tsumos increase for lower negative weights. Going into the positives, we once again see a decrease.
+        </li>
+        <li>
+            Most importantly, the W/L ratio increases slowly. Then plateaus at the low 1.3s at -3 until -0.1.
+            At 0, the W/L ratio is 1.25, a sharp decrease without the algorithm accounting for the dangerous tiles.
+            After that, the W/L ratio decreases sharply as the algorithm starts to discard the most dangerous tiles, as expected.
+        </li>
+        </ul>
+        </p>
+
+        <p>
+            To end things, a weight of -3 until -0.1 is generally sufficient to gaurantee an above 1.25 W/L ratio, which means
+            that on average for every 4 direct losses, our player will win 5 times. If I was asked for one specific value,
+            I would go for a weight of -2.5. This is the point at which the curve stay relatively flat while risking
+            the least, noting that more negative weights deliver less losses, indicating more steady play.
+        </p>
+    </div>
+
+    <div>
+        <h2>Make your own plot</h2>
+        
+        <div class="centre customiser-controls">
+            <h3>Controls  
+            <button class="controlbtn" id="add-row">Add row</button>
+            <button class="controlbtn" id="remove-row">Remove row</button>
+            </h3>
+        </div>
+        
+        <table id="customised-plot" class="centre">
+            <tr>
+                <td>Name</td>
+                <td>Data Series</td>
+                <td>Player Selected</td>
+                <td>Best fit?</td>
+            </tr>
+        </table>
+
+        <div class="centre customiser-controls">
+            <button class="controlbtn" id="generate">Generate</button>
+        </div>
+        
+        <div class="collapsed centre" id="customised-plot-graph"></div>
+    </div>
+
+    <div class="end-of-content-bar"></div>
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+</body>
+<!--Charting-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="../scripts/weights.js" type="module"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

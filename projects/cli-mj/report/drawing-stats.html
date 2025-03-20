@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing Statistics</title>
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+</head>
+<!--Nav bar-->
+<div class="nav-div">
+    <nav>
+        <a href="/"><span class="icon">..ico</span></a>
+        <a href="/resources/"><button><img src="/media/file.png" height="16vh">  ./Files</button></a>
+        <a href="/projects/"><button><img src="/media/file.png" height="16vh">  ./projects</button></a>
+    </nav>
+</div>
+<body>
+    
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Drawing Statistics</h2>
+        <p>The AI is programmed to draw from a randomised deck, and play games of mahjong on its own. In this section we will evaluate the two following items:</p>
+        <ul>
+            <li>The average tile to finish for hands at different starting scores.</li>
+            <li>Relationship between average tile to finish and starting score to valid our score evaluation method.</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Results <button id="exp_btn">Expand</button></h2> 
+        <div class="expand-on-clk" id="drawing-stats-results-tbl">
+            <p>Average tile to finish against starting score (values in cells are in tiles)</p>
+        </div>
+    </div>
+
+    <div>
+        <p>A slight introduction on the few "Mk"s above</p>
+        <ul>
+            <li>Mk1: The first model I created, but it had the unfortunate flaw of valuing an edge straight equally as an open straight. Thus, edge straights
+                are valued higher than pairs, which is not what we exactly anticipate.
+            </li>
+            <li>Mk2: The same basic logic as Mk1, but with the afromentioned issue addressed.
+            </li>
+            <li>MkPair: Utilising the same base logic, this model prioritises the identification of pairs when it is evaluating its hand initially. Note that Mk1 and Mk2 both
+                default to prioritising straights.
+            </li>
+            <li>Mk3: A model made way later. Instead of prioritising either straights or pairs, the Mk3 model evaluates all possible combinations of straights, triplets and partial sets
+                to find the most favourable situation of evaluating (and hence playing) the hand. Mk3 is the most powerful algorithm, but it consumes much more computing resources and 
+                time to evalute each move (~5-10x more) due to its recursive algorithm leading to an O(n!) time complexity instead of the O(n) of the original one. For small arrays
+                like the ones in mahjong, this is not a massive issue, but if we proceed to play 500 tile mahjong, then we may turn to using the slightly weaker Mk2 and MkPair models.
+            </li>
+        </ul>
+    </div>
+
+    <div class='graph' id="winningCompGraph"></div>
+    <div>
+        <h2>Analysis</h2>
+        <p>Now obviously we can conclude that Mk1 is the worst model since it it always 2-3 tiles higher than the rest throughout most of the range. Reflecting the obvious fact that,
+            edge straights are garbage. Even though edge straights can have more access to useful tiles compared to pairs (4 vs 2), an edge straight has no chance of becoming an
+            open straight, while a pair is given such a chance.
+        </p>
+
+        <p>The difference between Mk2 and MkPair models, however, is quite minimal for this test. Hence, your preference for straights or pairs has little effect on your overall
+            success.
+        </p>
+
+        <p>To ensure a fair test, the opening scores of the Mk3 model was measured with the Mk2 methods. The Mk3 model did not make a significant difference, most probably
+            due to the lack of complexity in most hands. However, the Mk3 model is programmed to identify patterns in methods which are a superset of the algorithms of the Mk2/MkPair
+            model. In general, you are never worse off with the Mk3 model, particularly with complex hands.
+        </p>
+
+        <p>To give more clarification on "complex" hands, they generally refer to hands with lots of tiles in the same suit, leading to many ways of identifying sets and partial sets.</p>
+
+        <p>Looking at the general trend, we can see a linear decrease of average tiles to finish against opening score, showing a negative linear relationship between the two.
+            This is exactly what we expect from a reasonable score evaluation model. High scoring hands should be able to be completed within shorter timeframes, or tileframes, if you prefer.
+        </p>
+    </div>
+
+    <div>
+        <h2>Results <button class="exp_btn" id="exp_btn2">Expand</button></h2> 
+        <div class="expand-on-clk" id="calling-stats-results-tbl">
+            <p>Average tile to reach "calling point" i.e. 1 tile away from winning (values in cells are in tiles)</p>
+        </div>
+    </div>
+
+    <div class='graph' id="calling-graph-div"></div>
+
+    <div>
+        <h2>Analysis</h2>
+        <p>Here we see a larger difference between MkPair and Mk2/Mk3, indicating that generally considering straights first is the faster way to proceed. This makes
+            sense for our case since straights generally can take in more tiles than pairs. However, in gameplay this bias is largely eliminated due to the 
+            pair's ability to get the last tile from any player.
+        </p>
+
+        <p>It is also here we can see a general edge to the Mk3 model over its Mk2 cousin, indicating that the Mk3 model is generally better at play, especially 
+            for the higher opening score hans, where the difference is more apparent. Due to the small tile count, an improvement of ~0.5 tiles can already represent
+            a 5-8% increase in efficiency. The error ranges for Mk2/MkPair at high range is smaller than Mk3, this is mainly due to myself adding in extra top-up data, which only
+            contained hands with >7 points at opening for the Mk2 model when making the initial comparison with the MkPair model.
+        </p>
+
+        <p>Once again, the graph shows a negative relationship between tiles to reach calling point and starting score, reinforcing the validity of our scoring model.</p>
+        <p> Finally, if we compare the differences between the calling and the winning graphs, we can see that while ~20 tiles are used to get the first 16 tiles in place,
+            the last ~20 tiles are consumed for the last tile. Thus, if you find yourself sitting there waiting for the last time for what seems like the entire game, it is a
+            normality rather than an anomaly.
+        </p>
+    </div>
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+
+
+</body>
+
+<!--Charting-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script src="../scripts/drawing-stats.js" type="module"></script>
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</html>

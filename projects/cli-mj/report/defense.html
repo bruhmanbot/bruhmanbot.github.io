@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <link href="../styles/defense.css" rel="stylesheet">
+    <title>Defense</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  /Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  /projects</button></a>
+        </nav>
+    </div>
+
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Defense</h2>
+        <p>In the final section, we will try to construct a model for defending in mahjong. This model
+            aims to generate the probability of losing for each discard and facilitate decision making from
+            there on.
+        </p>
+    </div>
+
+    <div>
+        <h2>Hypothesis</h2>
+        <p>We anticipate the probability of a mahjong tile being the losing tile as dependent
+            with the following few factors:
+        </p>
+        <ol>
+            <li>Game progression: The longer the game goes on, the more likely someone is waiting on a tile</li>
+            <li>Tile "popularity": The tile itself will result in different levels of demand for it. For instance,
+                a number tile is generally more demanded than a lucky tile.
+            </li>
+            <li>Appearances: Perhaps the most important factor. A tile which has never been discarded before
+                is much more likely to result in a loss compared to a tile which has been discarded once or twice
+                before the round.
+            </li>
+        </ol>
+        <p>We have already examined the first two factors in the previous sections. All that is left to do
+            is to figure out how exactly the number of appearances affect the losing chance of a tile. For that
+            we will plot the <i>proportion</i> of losses caused by a tile with regards to how many times it has
+            appeared in the discard/displayed pile.
+        </p>
+        <p># Displayed just means the tiles that other players display after taking a tile from someone else.</p>
+    </div>
+
+    <div>
+        <h2>The results<button id="exp_btn">Expand</button></h2>
+        <div class="compact centre expand-on-clk">
+            <table class="resultsTable">
+                <th>
+                    <td colspan="1000">Winning Tile ID</td>
+                </th>
+                <tr>
+                    <td>Appearances</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>21</td>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                    <td>25</td>
+                    <td>26</td>
+                    <td>27</td>
+                    <td>28</td>
+                    <td>29</td>
+                    <td>31</td>
+                    <td>32</td>
+                    <td>33</td>
+                    <td>34</td>
+                    <td>35</td>
+                    <td>36</td>
+                    <td>37</td>
+                    <td>38</td>
+                    <td>39</td>
+                    <td>41</td>
+                    <td>42</td>
+                    <td>43</td>
+                    <td>44</td>
+                    <td>45</td>
+                    <td>46</td>
+                    <td>47</td>
+                    <td>Grand Total</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1911</td>
+                    <td>3532</td>
+                    <td>3617</td>
+                    <td>3815</td>
+                    <td>3662</td>
+                    <td>3668</td>
+                    <td>3381</td>
+                    <td>2669</td>
+                    <td>1763</td>
+                    <td>1877</td>
+                    <td>3568</td>
+                    <td>3474</td>
+                    <td>3741</td>
+                    <td>3692</td>
+                    <td>3604</td>
+                    <td>3415</td>
+                    <td>2667</td>
+                    <td>1721</td>
+                    <td>1925</td>
+                    <td>3568</td>
+                    <td>3432</td>
+                    <td>3705</td>
+                    <td>3742</td>
+                    <td>3562</td>
+                    <td>3409</td>
+                    <td>2617</td>
+                    <td>1742</td>
+                    <td>524</td>
+                    <td>454</td>
+                    <td>465</td>
+                    <td>489</td>
+                    <td>473</td>
+                    <td>488</td>
+                    <td>476</td>
+                    <td>86848</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>758</td>
+                    <td>1384</td>
+                    <td>1596</td>
+                    <td>1666</td>
+                    <td>1686</td>
+                    <td>1748</td>
+                    <td>1764</td>
+                    <td>1074</td>
+                    <td>759</td>
+                    <td>793</td>
+                    <td>1478</td>
+                    <td>1494</td>
+                    <td>1706</td>
+                    <td>1625</td>
+                    <td>1675</td>
+                    <td>1743</td>
+                    <td>1186</td>
+                    <td>717</td>
+                    <td>808</td>
+                    <td>1447</td>
+                    <td>1506</td>
+                    <td>1674</td>
+                    <td>1700</td>
+                    <td>1732</td>
+                    <td>1655</td>
+                    <td>1138</td>
+                    <td>715</td>
+                    <td>56</td>
+                    <td>70</td>
+                    <td>68</td>
+                    <td>62</td>
+                    <td>88</td>
+                    <td>65</td>
+                    <td>81</td>
+                    <td>37717</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>318</td>
+                    <td>336</td>
+                    <td>351</td>
+                    <td>412</td>
+                    <td>395</td>
+                    <td>443</td>
+                    <td>468</td>
+                    <td>347</td>
+                    <td>304</td>
+                    <td>292</td>
+                    <td>303</td>
+                    <td>385</td>
+                    <td>422</td>
+                    <td>402</td>
+                    <td>448</td>
+                    <td>471</td>
+                    <td>388</td>
+                    <td>303</td>
+                    <td>346</td>
+                    <td>328</td>
+                    <td>358</td>
+                    <td>420</td>
+                    <td>456</td>
+                    <td>453</td>
+                    <td>459</td>
+                    <td>315</td>
+                    <td>316</td>
+                    <td>32</td>
+                    <td>36</td>
+                    <td>28</td>
+                    <td>21</td>
+                    <td>35</td>
+                    <td>26</td>
+                    <td>19</td>
+                    <td>10436</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>160</td>
+                    <td>78</td>
+                    <td>86</td>
+                    <td>102</td>
+                    <td>108</td>
+                    <td>94</td>
+                    <td>109</td>
+                    <td>132</td>
+                    <td>176</td>
+                    <td>147</td>
+                    <td>92</td>
+                    <td>97</td>
+                    <td>104</td>
+                    <td>102</td>
+                    <td>110</td>
+                    <td>110</td>
+                    <td>132</td>
+                    <td>167</td>
+                    <td>159</td>
+                    <td>91</td>
+                    <td>111</td>
+                    <td>107</td>
+                    <td>106</td>
+                    <td>103</td>
+                    <td>109</td>
+                    <td>127</td>
+                    <td>191</td>
+                    <td>18</td>
+                    <td>18</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>15</td>
+                    <td>11</td>
+                    <td>19</td>
+                    <td>3322</td>
+                </tr>
+            </table>
+        </div>
+        <p>
+            For this study, wins counted by self-drawns (tsumos) are not counted. With that being said,
+            we can directly plot a graph of losing occurences against apperances.
+        </p>
+        <div class="graph" id="scatter-graph"></div>
+
+        <p>We can see the data split into two main groups, we can further deduce the different nature of the 
+            two types of tiles by plotting graphs of ln(losing proportion) against appearances.
+        </p>
+        <div class="graph" id="ln-graph"></div>
+        <div class="graph" id="ll-graph"></div>
+    </div>
+
+    <div>
+        <p>It can be seen that the data fit better on the ln(losing proportion) against appearances instead
+            of the ln-ln graph. With this, we can fit the data to an exponential decay curve.
+        </p>
+        <div>$$P(\textnormal{loss}) = A \exp{(-kx)}$$</div>
+        <div class="graph centre">
+            <img src="../data_graphs/fit.png" style="width: 100%;">
+            <i>Losing proportion data fitted to exponential decay curves</i>
+        </div>
+    </div>
+    <div>
+        <h2>Fitted values<button class="exp_btn" id="exp_btn2">Expand</button></h2>
+        <div class="expand-on-clk" id="fitted-values-table"></div>
+        <p>We can see a stark difference between lucky tiles and non-lucky tiles. Taking the averages, we get A = 1.56 and k = 0.91
+            for normal tiles, while the lucky tiles average out to A = 5.2 and k = 1.85.
+        </p>
+    </div>
+    <div>
+        <h2>The equation</h2>
+        <p>Now we combine everything we know to give the loss probability function as follows</p>
+        <div>
+            $$P(\textnormal{loss})=t_pAe^{-kx}\gamma(g)$$
+        </div>
+        <p>Parameters:</p>
+        <ul>
+            <li>t<sub>p</sub>: Tile popularity (1 for lucky tiles; 4 for 1/9 tiles; 8.5 for normal tiles.)</li>
+            <li>A: fitted from exponential equation</li>
+            <li>k: fitted from exponential equation</li>
+            <li><i>&gamma;(g)</i>: The CDF of games ended for <i>g</i> tiles played</li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Piecing it together</h2>
+        <p>We adopt a weighted algorithm here, where we can assign different weights to our bots to determine their playstyle.
+            This means we must consider the value of advancing one's hand as well as the potential dangers of discard a tile in order
+            to justify the "value" of each tile.
+        </p>
+        <div>
+        <h3>Advacing value</h3>
+        <p>To get the value of a hand after discarding a tile, we consider how much we have, and this brings us back to the scoring concept.
+            As always, we want to first maximise our hand's score with both the complete and partial sets. Next, of the partial sets that we keep,
+            we aim to keep the ones we are most likely to get tiles for. The same goes for singular tiles. Using the previous definitions of
+            "usefulness" for tiles defined in the <a href="drawing.html">drawing section</a>, we once again assign suitable weights to keep
+            our priorities of score &rightarrow; partial sets &rightarrow; singular tiles. Thus, netting us the following dot product to calculate
+            the "advancing" value for each tile.
+        </p>
+        <div>$$v_a = E_W\begin{pmatrix}8 & 0.4 & 0.01\end{pmatrix} \hphantom{} 
+            \begin{pmatrix}h_c \\ u_p \\ u_s \end{pmatrix}$$</div>
+
+        <p>Parameters:</p>
+        <ul>
+            <li><i>E<sub>W</sub></i> : Expected winning score, depends on goal, but for normal hands it is set to 16 (the median)</li>
+            <li><i>h<sub>c</sub></i> : Hand score after discard the tile in question and calibrated. Calibrated means that
+            scores from useless partial sets are deducted.</li>
+            <li><i>u<sub>p</sub></i> : Calculated from the emerging hand, as defined in the <a href="drawing.html">drawing section</a></li>
+            <li><i>u<sub>s</sub></i> : Calculated from the emerging hand, as defined in the <a href="drawing.html">drawing section</a></li>
+        </ul>
+
+        <p>Now of course these weights can be further optimised, but that's for future development. Right now, these weights
+            were able to produce logical play in my testing, and as we will soon find, is actually even more powerful than our
+            original playing algorithm.
+        </p>
+        </div>
+        <div>
+        <h3>Danger value</h3>
+        <p>The word danger implies about the potential loss we would risk if we were to discard the tile. This gives us a
+            elementary method to calculate our potential losses as (loss probability) times (expected loss value).
+        </p>
+        <div>
+            $$v_d=r\cdot P(\textnormal{loss}) \cdot E_L$$
+        </div>
+        <p>Parameters:</p>
+
+        <ul>
+            <li>P(loss): As defined above</li>
+            <li>E<sub>L</sub>: Expected loss value, currently taken as 16 for normal tiles, and 20 for lucky tiles. Lucky tiles generally
+                net larger scores, while 16 points is the median for all winning hands.
+            </li>
+            <li>r: Recency factor, due to rules of Taiwanese mahjong, (and just general mahjong patterns), nobody can win off a
+                tile discarded within the last round. In other words, the last 4 tiles in the discard pile have a 0% chance of winning.
+                We also consider the more recently discarded tiles as "safer". We hence assign r = 0 if a tile was in the last 4 discards, and r = 0.5
+                if a tile was in the last 12 discards.
+            </li>
+        </ul>
+        </div>
+
+        <div>
+        <h3>Arriving at the final value</h3>
+        <p>Piecing both of the above results, we can get the value for each discard tile as shown below:</p>
+        <div>
+            $$v_d(t) = \begin{pmatrix} w & l \end{pmatrix} \begin{pmatrix} v_a \\ v_d \end{pmatrix}$$
+        </div>
+        <p>For convenience, we set <i>w</i> = 1, since all values are relatively afterall. Noting that from above,
+        <i>v<sub>d</sub></i> is a positive number, yet dangerous tiles should score lower, we can deduce that <i>l</i>
+        must be negative to ensure our expected results. We can interpret the values of w and l as such:</p>
+        <div class="highlightbox centre">
+            <p><i>w</i> : The winning desire; The higher w is, the more our bot about cares about pure speed</p>
+            <p><i>l</i> : The losing punishing; The more negative l is, the more our bot sacrifices everything in order not to lose.</p>
+        </div>
+        
+        <p>With <i>w</i> and <i>l</i> set as such, we see that tiles that give us the high score are those
+        that do not affect hand progress much, and have little chance of losing. Hence, our program will choose to discard
+        the tile with the highest <i>v<sub>d</sub> (t)</i> value.</p>
+        </div>
+    </div>
+
+    <div class="centre">
+        <!--TODO: ADD A FLOWCHART HERE-->
+        We are waiting for an image of a flowchart of the above process... <br>
+        <img src="https://placehold.co/600x400?text=amogUS\nWorld">
+    </div>
+
+    <div>
+        <h2>The new model</h2>
+        <p>A test run with l = -7 showed promising results as follows:</p>
+        <table class="resultsTable">
+            <tr>
+                <td>Player</td>
+                <td>Wins</td>
+                <td>Losses</td>
+                <td>W/L</td>
+            </tr>
+            <tr>
+                <td>ai_0</td>
+                <td>2099</td>
+                <td>2326</td>
+                <td>0.90</td>
+            </tr>
+            <tr>
+                <td>ai_1</td>
+                <td>2339</td>
+                <td>2015</td>
+                <td>1.16</td>
+            </tr>
+            <tr>
+                <td>ai_2</td>
+                <td>2238</td>
+                <td>2305</td>
+                <td>0.97</td>
+            </tr>
+            <tr>
+                <td>ai_3</td>
+                <td>2222</td>
+                <td>2252</td>
+                <td>0.99</td>
+            </tr>
+        </table>
+        <p>Here ai_1 was the test subject applied with the new algorithm. We can see with this new model, losses and
+            (somehow) wins increased, leading to our subject being the only player with a positive W/L Ratio. The next logical step is of course
+            to examine difference values of l to see which weight nets us the best odds.
+        </p>
+    </div>
+
+    <div class="end-of-content-bar"></div>
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+</body>
+<!--Charting-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="../scripts/defense.js" type="module"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</html>

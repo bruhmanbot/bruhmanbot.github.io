@@ -1,0 +1,96 @@
+select {
+    font-family: ubuntu, sans-serif;
+    color: var(--txt-primary-color);
+    background-color: var(--lowlight);
+    border-style: none;
+    padding: 0.5vh;
+    font-size: 2vh;
+}
+
+option {
+    font-family: ubuntu, sans-serif;
+}
+
+input {
+    background-color: var(--lowlight);
+    color: var(--txt-primary-color);
+    border-style: none;
+    padding: 0.5vh;
+    font-size: 2vh;
+    font-family: ubuntu, sans-serif;
+}
+
+input[type="checkbox"]{
+    position: relative;
+    width: 2.5vh;
+    aspect-ratio: 1/1;
+    appearance: none;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked{
+    background-color: var(--lowlight);
+}
+
+input[type="checkbox"]::before{
+    content: '';
+    position: absolute;
+    right: 0.3vh;
+    bottom: 0.3vh;
+    border: 0.9vh solid transparent;
+    transform: scale(1);
+}
+
+input[type="checkbox"]:checked::before{
+    border-color: var(--txt-primary-color);
+}
+
+table {
+    border-spacing: 0;
+    border: var(--txt-primary-color) 1px solid;
+}
+
+/* Coloured header row */
+tr:nth-child(1){
+   background-color: var(--lowlight); 
+}
+
+td {
+    text-align: center;
+    width: 8vw;
+    padding: 0.7vh;
+}
+
+
+.collapsed{
+    width: 0%;
+}
+
+.visible {
+    position: relative;
+    background-color: aliceblue;
+    width: 75%;
+    aspect-ratio: 4/3;
+}
+
+.customiser-controls{
+    margin: 2vh;
+}
+
+.customiser-controls h3{
+    line-height: 0%;
+}
+
+.controlbtn{
+    margin-left: 1vw;
+    background-color: var(--highlight1);
+}
+
+.controlbtn:hover{
+    background-color: var(--highlight2);
+}
+
+#generate {
+    font-size: 150%;
+    height: fit-content;
+}

@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <link href="../styles/special.css" rel="stylesheet">
+    <title>Specialty Hands</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  ./Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  ./projects</button></a>
+        </nav>
+    </div>
+
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Specialty hands</h2>
+        <p>This could quite be the most useful part for a lot of people. This part examines the mathematically optimal conditions to go for the two
+            specialty hands of Taiwansese mahjong - liguligu and 不搭 (referred to buddha in my code and below, pretty obvious why).
+        </p>
+    </div>
+
+    <div>
+        <h2>LiguLigu - The Strats</h2>
+        <p>LiguLigu is a hand characterised by the saying "8.5 pairs". The goal is to attain 7 pairs with one triplet, totalling to 17 tiles. A sample hand is shown below.
+        </p>
+        <div class="samples-div">
+            <table>
+                <tr>
+                    <td>
+                        <p class="caption">Sample LiguLigu hand</p>
+                    </td>
+
+                    <td>
+                        <table id="ligu-sample"></table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>Our strategy here is quite simple, we maximise the chances of getting a pair. Since the hand also requires a triplet, we would also keep triplets.
+            As a result, our flow goes as follows: Scan for pairs, triplets and quads to isolate singular tiles. Suppose we have singular tiles, we discard the most
+            useless one, defined with the simple u-formula below as the hand only accepts pairing up (rather than straights and stuff).
+        </p>
+
+        <p>$$u = 4-c_t$$</p>
+
+        <p>We would also encounter cases where we have useless triplets: A triplet with the last tile already being discarded. Now of course we can keep this triplet as is.
+            However, if we have more than 1 set of triplets, see below, then we would also consider discarding the useless triplet as it has no chance in giving us an extra pair
+            in the future.
+        </p>
+
+        <div class="samples-div">
+            <table>
+                <tr>
+                    <td>
+                        <p class="caption">Sample LiguLigu hand 2</p>
+                    </td>
+
+                    <td>
+                        <table id="ligu-sample2"></table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p>Suppose that the last 12 tile has already been discarded, with the last 15 tile not being displayed. The following table shows the situation for different
+            discard tiles, and the probability of getting a useful tile. For simplicity, assume the only tile discarded is the 12 tile.
+        </p>
+
+        <table class="no-border-spacing">
+            <th>
+                <td class="secondLayerCell">
+                    <table id="12"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="15"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="41"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="42"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="43"></table>
+                </td>
+            </th>
+            <tr>
+                <td class="secondLayerCell">
+                    Useful Tiles
+                </td>
+                <td class="secondLayerCell">
+                    <table id="12-u"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="15-u"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="41-u"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="42-u"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="43-u"></table>
+                </td>
+            </tr>
+            <tr>
+                <td class="secondLayerCell">$$ u = \sum_t{4-c_t} $$</td>
+                <td class="secondLayerCell">10</td>
+                <td class="secondLayerCell">9</td>
+                <td class="secondLayerCell">7</td>
+                <td class="secondLayerCell">7</td>
+                <td class="secondLayerCell">7</td>
+            </tr>
+        </table>
+
+        <p>As we can see, discarding 12 does give us the highest u-value, meaning that we are more likely to make progress next. Note that since 15 still remains
+            as a triplet, and that 1 triplet suffices, we have not lost any progress while discarding 12. As a recap here is the flowchart of the entire process.
+        </p>
+
+        <div class="flowchart">
+        <!-- draw.io diagram -->
+        <iframe frameborder="0" style="width:50vw; height: 50vh" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=lg.drawio.html#R%3Cmxfile%3E%3Cdiagram%20name%3D%22Page-1%22%20id%3D%22y3RKBFAH7zbuADu16HXs%22%3E7Vvfc5s4EP5rPHP3EA8%2FDLYfGyfpzVzvmrlMp82jDDKoFYgIEdv5608SAoSFU5ycS3L2i4NWYhGr3U%2FfrsjIXSSbjxRk8V8khHjkWOFm5F6NHMd2Jh7%2FIyTbUuI5dimIKArVoEZwh56gElpKWqAQ5q2BjBDMUNYWBiRNYcBaMkApWbeHrQhuPzUDETQEdwHApvQrCllcSmee1cj%2FgCiKqyfblupJQDVYCfIYhGStidzrkbughLDyKtksIBbGq%2BxS3nezp7eeGIUp63ND%2BrTwfjwET%2FPFx6%2B3yXf252e%2FuHDV3Ni2emEY8vdXTUJZTCKSAnzdSC8pKdIQCq0WbzVjPhGScaHNhd8hY1u1mKBghItilmDVCzeIfdOu74WqsadaVxulWTa2WuMWUpRABmklSxndftMbmibRbFTJVqVrRVJ2AxKEheDLskhZoaR3pKCBmHTMGHcwx3M%2F8B9uUvEjBuTjiJAIQ5ChfByQRHYEuRx6syp18stGa2lfYdS9y6ZEefXsfWtVuT%2BgEWTPjHNq5%2BJRCQm3GOWTsijEgKHH9jyACo%2BoHtd4EL9QTnSAQym9jwAX6kl3fMLMcDPNHUKQx7U7rWPE4F0GpCXWHFO4jEdOJprJJhIgMw5X4TiXWodYy0dIGdw8v5qm9dUNMwUGCg0dX7XXGrYoUazBimsdabk8Y7mGAIR3GpBOz4CcDBmQjhmQGUZM3JbydeCviVJuP26whTQDouqSUZRhyFTroQBhbvhGFZkZJQHkRu%2BOX22llyD4EUl%2F%2BVwwjFI4mAe8KowdayeOK5qjxbHtdQSyf6xAng65kTeb972%2Bd3dv5Ke1aU96YoQ%2F6KZtgsQ9NKNdGOQTWHKG3%2FICgFGU8uuAG0dws0sRWohT6A%2BqI0FhWDoczNETWEp9Yk0zwjFIvox3OfKu3goOqFxCTbRh8Pr67w%2FCvaBxYY1t1523gKOC597rrLTfCstpqp2WVq99P1mtcsgML6ln%2BHLHmZ%2Fpw%2FGhYTYoNJiE%2Fm9yRoZDkWH%2BM2Rw5%2B0QnvwnuOC1wcbeUXA8YJiYrJPTzAIDKjweSb7pY5HAheiRX0as5Ak5q%2BT8sVqX4XE0Jsmy6ME434Tf9GeW7nyHWbodzNLpYJazYzHLqhL3DmpENbVs2OS93vf%2Fopb%2Be9g%2FfAMIblAaivooEbFuFTnEInMs81ANIAynO9VcczJtI4LtmjUje%2FIrc037XDV6RdjOeoatPWjZyDYD95wSvoD4lbHyHPNzPG%2FS3vJfR%2F2OT%2B6cQRlBu9hU9ZwZwSHQMiglcMzk4JxSHo4s2iHyvmqT7b15LJkZvnC9kfTOTA%2BbAwlLZop5z1SxIo5NynjI4WOmHTorDdo59Nvwof5k0vN308sOMtl1cDE%2FGpl0TQ8QCcLOIp7Pi2UuYA18XmzPB936X1IMsE%2FinMnuW00edu%2B3OwqDAUhH4sssmfnHsFUUUJj%2FW%2F77Xlg%2FtXrA1G1jgjvrWSE8Wj2gyljO9YAXRW5f1r7PL35R5JpMreJfwoK8JwQMXIjri5wGcoT%2FUIivGy9Lswujc5PvMbg0d23s2tS1joreLUiSyfKgtSZUlhDVcYKF5emBtaJCHbdKXuAWRyyn%2BROSeGpoMtk5I3Jn03HPb1k870iu5piU8Iwn%2Fb9K6%2FudaMm8B6sCmAfLg%2BDJP5AVVBAQCtJQIoeOK2f4eB4%2B7PkuGfHHTgd%2BTLvwo0aaA5yLN5tP5ssiRPOPB%2B71vw%3D%3D%3C%2Fdiagram%3E%3C%2Fmxfile%3E"></iframe>
+
+        </div>
+        
+    </div>
+
+    <div>
+        <h2>LiguLigu - Drawing Results <button class="exp_btn" id="exp_btn">Expand</button></h2>
+    </div>
+    
+    <div class="expand-on-clk" id="ligu-results">
+    </div>
+
+    
+    <div>
+        <h2>Graphs</h2>
+        <div id="occ_graph" class="graph"></div>
+        <div id="ligu_graph" class="graph"></div>
+    </div>
+
+    <div>
+        <h2>Analysis</h2>
+        <p>Most hands start off with only 2 pairs (which is also the median), with the mean being 2.3 pairs. Under the average situation, it takes ~30 tiles to reach 
+            the calling point, and nearly 60 to win. This is expected since LiguLigu is a hard hand to go for, or in other words, it is only really worth trying
+            under a specific set of circumstances, which will be determined below.
+        </p>
+        <p>For the second graph, we see a negative relationship for the tiles to finish/calling point as the amount of pairs increase.
+            This is again as expected since pairs in LiguLigu is the corollary to completed sets for normal hands; The more, the better.
+        </p>
+    </div>
+
+    <div>
+        <h2>LiguLigu - The circumstances</h2>
+        <p>We further consider the starting score of each hand and the table below lists the difference of
+           the average amount of tiles to finish for the two types of hands, dependent on the amount of intial pairs and starting score.</p>
+        
+        <div id="diff-table">
+        </div>
+
+        <p>In the above table, a negative number indicates an edge to go for LiguLigu over the normal hands. The '/' you see is because of the minimum
+            score of the amount of pairs, e.g. for 6 pairs, the hand has a minimum of 3.0 points, so it is irrelevant to look at numbers below 3.0 points.
+            Using this information, we can generate a threshold table for LiguLigu where going for LiguLigu is an equally fast (if not faster) option than
+            the normal hands.
+        </p>
+        
+        <table class="resultsTable">
+            <tr>
+                <td>Pair</td>
+                <td>Max Score</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>0.5 (But realistically you will go for 不搭)</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>0.5 (But realistically you will go for 不搭)</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>1.0</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>1.75</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>3.25/3.5 (Depends on playstyle)</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>5.25/5.5</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>6.25</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>10 (Everything)</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <h2>16不搭 - The strats</h2>
+        <p>The best way to describe this hand is that we are playing anti-mahjong; making our hand as terrible as possible. This is kind of interesting since the
+            previous algorithms have been used to optimise mahjong, and now we are doing the reverse (essentially).
+        </p>
+
+        <div class="samples-div">
+            <table>
+                <td>
+                    16不搭 Sample
+                </td>
+                <td>
+                    <table id="bd1"></table>
+                </td>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <p>In the realm of this hand, see as no tile will appear more than twice, the most useless tile is definitely a triplet (or even quad!). Hence, they will be our first priority to throw away.
+            After that, we would try to identify excess number tiles, to illustrate, let's look at the below example.
+        </p>
+
+        <div class="samples-div">
+            <table>
+                <td>
+                    16不搭 Sample2
+                </td>
+                <td>
+                    <table id="bd2"></table>
+                </td>
+            </table>
+        </div>
+
+        <p>We can see the number sets for the 10-thousands and bamboo sets are complete. The same applies to the drums/cartons, but with an extra 2-tile. That tile is useless, as we can remove it
+            without hampering our progress. These types of excess tiles in completed sets will be our second priority to throw away. Alright, but what if there are no completed sets (e.g. 1-4-7 in this case)
+            present, or what if the excess tiles are in a non-complete set? (see below)
+        </p>
+
+        <div class="samples-div">
+            <table>
+                <td>
+                    16不搭 Sample3
+                </td>
+                <td>
+                    <table id="bd3"></table>
+                </td>
+            </table>
+        </div>
+
+        <p> It is obvious that our options is easily narrowed down to the 4 carton tiles. We can spot a pattern, for each completed (unrelated) set in this hand, the three tiles
+            respectively come from the low-mid-high range, with no 2 tiles in the same range.
+        </p>
+
+        <table class="no-border-spacing centred">
+            <tr>
+                <td class="secondLayerCell">
+                    Low-range
+                </td>
+                <td class="secondLayerCell">
+                    Mid-range
+                </td>
+                <td class="secondLayerCell">
+                    High-range
+                </td>
+            </tr>
+            <tr>
+                <td class="secondLayerCell">
+                    <table id="low-range"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="mid-range"></table>
+                </td>
+                <td class="secondLayerCell">
+                    <table id="high-range"></table>
+                </td>
+            </tr>
+            
+        </table>
+        
+        <p>
+            Hence, if we have one extra tile in any of the ranges, something is irrelevant. Remembering the fact that we are playing anti-mahjong, we want to keep the least useful tile (useful as in the
+            sense for normal hands). That means, for the low-range, we want to stick to the small tiles, as for the high-range, we stick to the large tiles. The closer we are to the edge, the better.
+            We can prove this logic by examining the hand above.
+        </p>
+
+        <table class="no-border-spacing centred">
+            <tr>
+                <td class="secondLayerCell">Tile Discard</td>
+                <td class="secondLayerCell"><table id="33"></table></td>
+                <td class="secondLayerCell"><table id="34"></table></td>
+                <td class="secondLayerCell"><table id="37"></table></td>
+                <td class="secondLayerCell"><table id="39"></table></td>
+            </tr>
+            <tr>
+                <td class="secondLayerCell">Subsequent useful tiles<br>to create a full unrelated set</td>
+                <td class="secondLayerCell"><table id="33u"></table></td>
+                <td class="secondLayerCell"><table id="34u"></table></td>
+                <td class="secondLayerCell"><table id="37u"></table></td>
+                <td class="secondLayerCell"><table id="39u"></table></td>
+            </tr>
+        </table>
+
+        <p>As we can see, discarding the 7-tile exposes us to the largest amount of tiles. Affirming the logic of keeping the large tiles for high-ranges should there
+            be extra tiles. Due to the symmetry of mahjong, it also means that we should keep the smaller tiles for low-range if there are extra tiles. 
+            Then, we examine what happens if the mid-range has too many tiles, take the following example.
+        </p>
+    </div>
+
+    <div>
+        <div class="samples-div">
+            <table>
+                <td>
+                    16不搭 Sample4
+                </td>
+                <td>
+                    <table id="bd4"></table>
+                </td>
+            </table>
+        </div>
+
+        <p>Obviously we will discard one of the mid-range tiles here, the question being which one. To do so, we evaluate the most favourable situation afterwards, to see which
+            tile currently gives us the least value, or in other words, cannot constitute a partial (unrelated) set here. This of course requires us to look at the high and low range
+            complements.
+        </p>
+
+        <p>We choose the most "extreme" / "edge" tiles in the high range and low range to be our complements, since as mentioned above, they offer the most options. Then we find their mid-range
+            complement, which is the tile just right to create an "unrelated" partial set (see below to see what I mean). Using this, we can already eliminate some tiles and find a useless one.
+            In the case below, 26 is useless, hence will be discarded.
+        </p>
+
+        <table class="no-border-spacing centred">
+            <tr>
+                <td class="secondLayerCell">Low/High range complement</td>
+                <td class="secondLayerCell"><table id="22"></table></td>
+                <td class="secondLayerCell"><table id="27"></table></td>
+            </tr>
+            <tr>
+                <td class="secondLayerCell">Corresponding best <br>mid-range complement</td>
+                <td class="secondLayerCell"><table id="22c"></table></td>
+                <td class="secondLayerCell"><table id="27c"></table></td>
+            </tr>
+        </table>
+
+        <p>In the worst, most complicated case scenario, we have the following case. We hence count up the useful tiles as the tiebreaker, and come to the conclusion of discarding tile 13.
+            For simplicity sake, assume no tiles have been discarded for the following scenario.
+        </p>
+        <div class="samples-div">
+            <table>
+                <td>
+                    16不搭 Sample5
+                </td>
+                <td>
+                    <table id="bd5"></table>
+                </td>
+            </table>
+        </div>
+
+        <table class="no-border-spacing centred">
+            <tr>
+                <td class="secondLayerCell">Low/High range complement</td>
+                <td class="secondLayerCell"><table id="13"></table></td>
+                <td class="secondLayerCell"><table id="18"></table></td>
+            </tr>
+            <tr>
+                <td class="secondLayerCell">Corresponding best <br>mid-range complement</td>
+                <td class="secondLayerCell"><table id="13c"></table></td>
+                <td class="secondLayerCell"><table id="18c"></table></td>
+            </tr>
+            <tr>
+                <td class="secondLayerCell">Useful tiles</td>
+                <td class="secondLayerCell"><table id="13u"></table></td>
+                <td class="secondLayerCell"><table id="18u"></table></td>
+            </tr>
+            <tr>
+                <td class="secondLayerCell">$$ u = \sum_t{4-c_t} $$</td>
+                <td class="secondLayerCell">4</td>
+                <td class="secondLayerCell">8</td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <p>For the final edge case, we are in a situation with no ranges having more than 1 unique tile. This brings us to the conclusion that there must be excess pairs.
+            As the final failsafe, we can simply return the discard as any one of the excess pairs. In the example below, we return either tile 41 or 15. We can see in terms
+            of progress the two tiles are identical in function.
+        </p>
+        <table>
+            <td>
+                16不搭 Sample6
+            </td>
+            <td>
+                <table id="bd6"></table>
+            </td>
+        </table>
+    </div>
+
+    <div>
+        <h2>16不搭 Results<button class="exp_btn" id="exp_btn2">Expand</button></h2>
+    </div>
+
+    <div class="expand-on-clk" id="bd-div">
+        <!--Content delivered by js-->
+    </div>
+
+    <!--Bd graphs-->
+    <div>
+        <h2>Graphs</h2>
+        <div class="graph" id="bd-occ-graph"></div>
+        <div class="graph" id="bd-graph1"></div>
+        <div class="graph" id="bd-graph2"></div>
+    </div>
+    
+    <div>
+        <h2>Analysis</h2>
+        <p>Once again we can see the clear relationship between starting score and tiles used to finish or reach the calling point for 16不搭 hands. As expected,
+            the higher scores, generally more "connected" hands struggle to complete themselves while the terrible ones can do so relatively quickly.
+    
+            Interestingly when plotted against the occurence of unique lucky tiles, the trend shows a near-quadratic relationship with the amount of lucky tiles
+            initially present.</p>
+
+        <h2>16不搭 - The circumstances</h2>
+        <p>The '/' boxes indicate a lack of data due to the rarity of the hands, but the data is still sufficient to extract useful insights. The differences and thresholds for
+            16不搭 hands are listed in the 2 tables below.
+        </p>
+        <h3>Difference table</h3>
+        <div class="diff-table">
+            <table class="resultsTable">
+                <tr>
+                    <td colspan="1000" style="text-align: center;">Initial Score</td>
+                </tr>
+                <tr><td rowspan="1000">Initial Unique<br>Lucky Tiles</td></tr>
+                <tr>
+                    <td></td>
+                    <td>0.75</td>
+                    <td>1.00</td>
+                    <td>1.25</td>
+                    <td>1.50</td>
+                    <td>1.75</td>
+                    <td>2.00</td>
+                    <td>2.25</td>
+                    <td>2.50</td>
+                    <td>2.75</td>
+                    <td>3.00</td>
+                    <td>3.25</td>
+                    <td>3.50</td>
+                    <td>3.75</td>
+                    <td>4.00</td>
+                    <td>4.25</td>
+                    <td>4.50</td>
+                    <td>4.75</td>
+                    <td>5.00</td>
+                    <td>5.25</td>
+                    <td>5.50</td>
+                    <td>5.75</td>
+                    <td>6.00</td>
+                    <td>6.25</td>
+                    <td>6.50</td>
+                    <td>6.75</td>
+                    <td>7.00</td>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>17.83</td>
+                    <td>13.79</td>
+                    <td>12.46</td>
+                    <td>17.20</td>
+                    <td>/</td>
+                    <td>18.74</td>
+                    <td>16.14</td>
+                    <td>21.85</td>
+                    <td>21.03</td>
+                    <td>23.62</td>
+                    <td>26.90</td>
+                    <td>22.26</td>
+                    <td>23.75</td>
+                    <td>23.02</td>
+                    <td>20.49</td>
+                    <td>30.64</td>
+                    <td>/</td>
+                    <td>27.18</td>
+                    <td>25.23</td>
+                    <td>29.00</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>19.62</td>
+                    <td>12.49</td>
+                    <td>13.69</td>
+                    <td>16.69</td>
+                    <td>16.07</td>
+                    <td>16.46</td>
+                    <td>14.42</td>
+                    <td>16.03</td>
+                    <td>17.70</td>
+                    <td>19.41</td>
+                    <td>17.94</td>
+                    <td>18.46</td>
+                    <td>19.96</td>
+                    <td>21.94</td>
+                    <td>19.58</td>
+                    <td>23.72</td>
+                    <td>22.51</td>
+                    <td>26.49</td>
+                    <td>25.09</td>
+                    <td>25.41</td>
+                    <td>26.85</td>
+                    <td>31.39</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>8.82</td>
+                    <td>10.30</td>
+                    <td>10.92</td>
+                    <td>11.88</td>
+                    <td>11.17</td>
+                    <td>13.01</td>
+                    <td>12.81</td>
+                    <td>12.67</td>
+                    <td>14.34</td>
+                    <td>14.65</td>
+                    <td>15.65</td>
+                    <td>16.10</td>
+                    <td>17.76</td>
+                    <td>19.46</td>
+                    <td>19.10</td>
+                    <td>18.36</td>
+                    <td>19.84</td>
+                    <td>18.72</td>
+                    <td>20.64</td>
+                    <td>22.87</td>
+                    <td>24.46</td>
+                    <td>21.79</td>
+                    <td>20.51</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>/</td>
+                    <td>6.07</td>
+                    <td>4.98</td>
+                    <td>7.24</td>
+                    <td>7.27</td>
+                    <td>8.39</td>
+                    <td>8.71</td>
+                    <td>8.84</td>
+                    <td>10.11</td>
+                    <td>10.62</td>
+                    <td>11.18</td>
+                    <td>11.69</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                    <td>32.66</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>-0.10</td>
+                    <td>1.50</td>
+                    <td>2.07</td>
+                    <td>2.81</td>
+                    <td>5.10</td>
+                    <td>4.80</td>
+                    <td>5.54</td>
+                    <td>5.31</td>
+                    <td>5.56</td>
+                    <td>7.44</td>
+                    <td>7.90</td>
+                    <td>9.23</td>
+                    <td>10.41</td>
+                    <td>9.24</td>
+                    <td>7.64</td>
+                    <td>9.34</td>
+                    <td>14.84</td>
+                    <td>13.54</td>
+                    <td>17.51</td>
+                    <td>13.10</td>
+                    <td>/</td>
+                    <td>17.92</td>
+                    <td>/</td>
+                    <td>17.25</td>
+                    <td>/</td>
+                    <td>/</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>-6.20</td>
+                    <td>-2.99</td>
+                    <td>-2.94</td>
+                    <td>0.03</td>
+                    <td>-1.16</td>
+                    <td>2.47</td>
+                    <td>4.17</td>
+                    <td>-0.21</td>
+                    <td>1.18</td>
+                    <td>2.54</td>
+                    <td>6.23</td>
+                    <td>8.26</td>
+                    <td>3.54</td>
+                    <td>9.29</td>
+                    <td>5.03</td>
+                    <td>12.31</td>
+                    <td>13.27</td>
+                    <td>8.33</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>-10.68</td>
+                    <td>-6.46</td>
+                    <td>-0.74</td>
+                    <td>-1.95</td>
+                    <td>1.71</td>
+                    <td>0.02</td>
+                    <td>-1.61</td>
+                    <td>-3.67</td>
+                    <td>-3.28</td>
+                    <td>0.53</td>
+                    <td>0.90</td>
+                    <td>6.82</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>-16.96</td>
+                    <td>-7.18</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                    <td>/</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Thresholds</h3>
+
+        <table class="resultsTable">
+            <tr>
+                <td>Initial unique lucky tiles</td>
+                <td>Max score</td>
+            </tr>
+            <tr>
+                <td>0-3</td>
+                <td>0 (never)</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>0.75-1 (Again depends on playstyle)</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>1.5</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>3/3.25</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>10 (Always go for it)</td>
+            </tr>
+        </table>
+    </div>
+    
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+    
+
+</body>
+
+<!--Charting-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script src="../scripts/special.js" type="module"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</html>

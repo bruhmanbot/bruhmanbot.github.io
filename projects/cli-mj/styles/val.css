@@ -1,0 +1,72 @@
+#hand_val_chart{
+    text-align: center;
+}
+
+table{
+    border: none;
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 0;
+}
+
+.val_chart {
+    padding: 0.5vw;
+    border: 1px var(--highlight2) solid;
+}
+
+.left-border-div-cell{
+    border-left: var(--txt-primary-color) solid 0.3vw;
+    float: left;
+}
+
+.eval_stuff{
+    text-align: center;
+}
+
+.eval_stuff button{
+    padding: 2vw;
+    line-height: 0;
+    border: 2px white solid;
+    border-radius: 15px;
+}
+/* 
+@keyframes shift-left {
+    0% {
+        right: 0;
+    }
+
+    100% {
+        right: 2vw;
+    }
+} */
+.eval_hand_ps_moved {
+    position: relative;
+    right: 2vw;
+    /* animation: shift-left ease-in 0.8s */
+}
+
+.score-span-inactive{
+    visibility: hidden;
+}
+
+/* @keyframes score-span-appear {
+    0% {
+        right: 2vw;
+        visibility: hidden;
+        opacity: 0;
+        width: 0;
+    }
+    90% {
+        right: 0;
+        visibility: visible;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+} */
+.score-span{
+    position: relative;
+    visibility:visible;
+    /* animation: score-span-appear 0.8s ease-in; */
+}

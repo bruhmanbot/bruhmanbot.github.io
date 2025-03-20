@@ -1,0 +1,122 @@
+body{
+    margin-top: 8vh; /*Allow space for the navbar */
+}
+div {
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+
+.nav-div{
+    margin:0;
+}
+
+a{
+    text-decoration: none;
+    color: var(--txt-primary-color);
+}
+
+p{
+    text-align: justify;
+}
+
+.project-div {
+    display: block;
+    text-align: left;
+    transition: all 0.4s ease-in;
+}
+
+.project-div table{
+    width: 100%;
+
+}
+
+.project-div td{
+    width: 40%;
+    padding-bottom: 1vw;
+}
+
+
+.proj-container {
+    text-align: left;
+    cursor: pointer;
+    margin: 0;
+    width: fit-content;
+    height: 28vh;
+    vertical-align: middle;
+    border-left: white 1.4vw solid;
+    border-radius: 0;
+    padding: 1vw;
+    transition: all 0.1s linear;
+    
+}
+
+.proj-container img{
+    display: inline;
+    width: 10vw;
+}
+
+.proj-container:hover{
+    background-color: var(--highlight2);
+}
+
+.proj-container h1{
+    line-height: 0;
+}
+
+.proj-container table{
+    border: none;
+}
+
+.proj-container td {
+    width: fit-content;
+}
+
+@keyframes show_msg {
+    0% {
+        position: relative;
+        left: 4vw;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    10% {
+        visibility: visible;
+        opacity: 0;
+    }
+
+    30%{
+        opacity: 0.5;
+    }
+
+    50%{
+        opacity: 1;
+    }
+
+    100% {
+        left: 0vw;
+    }
+    
+}
+
+#pandora-msg, #mjc-msg{
+    position: relative;
+    visibility: hidden;
+    left: 100px;
+}
+
+#pandora-div:hover #pandora-msg{
+    visibility: visible;
+    left: 0vw;
+
+    animation: show_msg 0.4s ease-out;
+}
+
+#mjc-div:hover #mjc-msg{
+    visibility: visible;
+    left: 0vw;
+
+    animation: show_msg 0.4s ease-out;
+}
+
+
+

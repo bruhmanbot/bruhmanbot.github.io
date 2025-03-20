@@ -1,0 +1,77 @@
+body {
+    margin-top: 8vh; /* Space for the nav bar */
+}
+div {
+    margin-left: 10vw;
+    margin-right: 10vw
+}
+
+a{
+    color: var(--txt-primary-color);
+}
+
+.nav-div{
+    margin:0;
+}
+
+div div {
+    margin: 0;
+}
+
+.linktree {
+    margin: 0;
+    padding-left: 10vw;
+    padding-right: 10vw;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    background-color: var(--lowlight);
+}
+
+.socialmedia-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.horiz-align{
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-evenly;
+}
+
+.vert-align{
+    flex-direction: column;
+    align-items: center;
+}
+
+.social {
+    text-align: center;
+    width: 100%;;
+    flex-grow: 1;
+    align-items: center;
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+.social h3{
+    line-height: 0;
+}
+
+.social img{
+    filter: drop-shadow(0px 0px 0.5vh var(--txt-primary-color));
+    height: 50%;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    max-height: 20vh;
+}
+
+.social-button{
+    margin-top: 1vh;
+    margin-bottom:1vh;
+    opacity: 0;
+}
+
+.social:hover > .social-button {
+    opacity: 100%;
+    transition: all 0.15s linear;
+}

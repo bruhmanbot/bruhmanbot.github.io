@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <title>cli-mj</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+    
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  ./Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  ./projects</button></a>
+        </nav>
+    </div>
+
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Abstract</h2>
+        <p>Mahjong is inherently a game of luck, but no wins come without an element of skill.
+            As an extension to my taiwanese mahjong counter, this component aims to generate a mathematically best method to approach the game.
+            A model on evaluating the "goodness" of mahjong hands will be provided, and a CPU algorithm optimising the winning chances is created.
+            Using the computer model, mahjong games can be simulated at a very fast rate, thus generating heaps of data which is further analysed to provide insights to the game.
+        </p>
+    </div>
+
+    <div>
+        <h2>Taiwanese mahjong: The core differences</h2>
+        <p>Cantonese mahjong (or Hong Kong mahjong) is a commonly played ruleset of mahjong. The modern ruleset first became popular in the 1970s, and continued to develop
+            throughout the 20th century. As of now, a rule enforced most of the time is the '3-faan' rule, which requires players to end the game with a hand worth at least 3 faan.
+            While the rule is mostly in place to facilitate players to go for higher scoring hands, it does inadvertantly lead to a more stale game with the playstyle being
+            severely predictable and locked down.
+        </p>
+        
+        <p>
+           Due to these concerns, a newer style of play rose up using mainly the Taiwanese rules. In this ruleset, players play with 16 tiles, instead of the familiar 13 tiles.
+           Moreover, there are significantly more accolades and ways to score high points, leading to a more diverse playstyle compared to Hong Kong style mahjong. Most importantly,
+           however, is the addition of combo scoring which makes speed a priority instead of score, since combo-ing others to abuse the exponential increase in score is usually a more
+           effective way to gain more money than plainly scoring big.
+        </p>
+
+        <div class="eyecandy">
+            <table>
+                <tr>
+                    <td>
+                        <p class="caption">Typical Cantonese mahjong hand - 13 tiles</p>
+            
+                    </td>
+                    <td>
+                        <table id="cthand1"></table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="caption">Typical Taiwanese mahjong hand - 16 tiles</p>
+                    </td>
+                    <td>
+                        <table id="twhand1"></table>
+                    </td>
+                </tr>
+            </table>
+            
+        </div>
+        
+
+        <p>
+            Owing to these differences, the model developed will focus on speed with an element of defense at play. Like most Taiwanese mahjong players, the model does not
+            focus on gaining more points/accolades. For the purposes of the game, flowers do not play a huge role, so they are initially not considered. Later on, they were added
+            back for simulation of real 4-player games, but it is important to note they play a minimal role in affecting gameplay.
+        </p>
+    </div>
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+</body>
+<script src="../scripts/intro.js" type="module"></script>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=3.0">
+
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <link href="../styles/val.css" rel="stylesheet">
+
+    <title>Hand valuation</title>
+</head>
+<body>
+    <!--Nav bar-->
+    <div class="nav-div">
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  ./Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  ./projects</button></a>
+        </nav>
+    </div>
+
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Hand valuation</h2>
+        <p>An age old question (and source of complaints) in mahjong games is how good or bad my hand is. This question may seem like a simple preference or
+            one where the answer is wholly dependent on personal feelings. However, there are definitely cases where 'good' is a clear cut from 'bad'. Take the
+            following example:
+        </p>
+    </div>
+
+    <div>
+        <table>
+            <tr>
+                <td>
+                    <p class="caption">Hand 1</p>
+                </td>
+                <td>
+                    <table id="hand1"></table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p class="caption">Hand 2</p>
+                    
+                </td>
+                <td>
+                    <table id="hand2"></table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <p>Now obviously nearly everyone would prefer to play with hand 1 over hand 2, the reason being it is much closing to winning.
+            That raises a good approach to evaluate hands - one based on how close you are to winning. To win a game of Taiwanese mahjong,
+            we need 5 sets of 3, plus an eye pair. Using this, we can assign scores to completed sets of 3 (either straights or triplets).
+            To begin our model, we can simply assign 1 point for every completed sets. By this metric, hand 1 has 3 points, while hand 2 has 0.
+        </p>
+        <p>Of course, at the start of the game, we probably never have a completed set, but we can make completed sets from partial sets. 
+            For instance, a set of (2-3) can become a straight upon getting a 4 tile (becoming 2-3-4 straight). With this knowledge, we can assign 0.5 points to
+            any two tiles that can form a set with a third additional tile. The methods of this are shown below.
+        </p>
+    </div>
+
+    <div id="hand_val_chart">
+        <h3>Hand valuation chart mk1</h3>
+        <table>
+            <tr>
+                <td class="val_chart">
+                    Name
+                </td>
+                <td class="val_chart">
+                    Points
+                </td>
+                <td class="val_chart">
+                    Example(s)
+                </td>
+            </tr>
+            <!--Full set-->
+            <tr>
+                <td class="val_chart">
+                    Full set (straight)
+                </td>
+                <td class="val_chart">
+                    1.0
+                </td>
+                <td class="val_chart">
+                    <table id="fullStraight"></table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="val_chart">
+                    Full set (triplet)
+                </td>
+                <td class="val_chart">
+                    1.0
+                </td>
+                <td class="val_chart">
+                    <table id="fullTrips"></table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="val_chart">
+                    Open Straight
+                </td>
+                <td class="val_chart">
+                    0.5
+                </td>
+                <td class="val_chart">
+                    <table id="openStraight"></table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="val_chart">
+                    Pair
+                </td>
+                <td class="val_chart">
+                    0.5
+                </td>
+                <td class="val_chart">
+                    <table id="pair"></table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="val_chart">
+                    Hole
+                </td>
+                <td class="val_chart">
+                    0.25
+                </td>
+                <td class="val_chart">
+                    <table id="hole"></table>
+                </td>
+            </tr>
+            <tr>
+                <td class="val_chart">
+                    Edge straight
+                </td>
+                <td class="val_chart">
+                    0.25
+                </td>
+                <td class="val_chart">
+                    <table id="edgeStraight"></table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <p>Some annotation on the last two types of partial sets:</p>
+        <ul>
+            <li>
+                Hole: Two tiles that can form a complete straight, when inserting the tile between them. <br>
+                E.g. (3-5) can become a whole straight by inserting a (4) tile.
+            </li>
+            <li>
+                Edge straight: A psuedo-open straight (1-2, or 8-9) which seems like an open straight, but since 0 tiles do not exist, only one tile
+                can turn them into a complete straight.
+            </li>
+        </ul>
+        <p>These two types of partial sets are given less credit since they can only accept one tile to turn into a complete set. (A pair also only takes 1 tile but because you
+            can take the tile from everyone on the table, it is significantly easier to get said tile compared to an edge straight or a hole-filling set.)
+        </p>
+    </div>
+    
+    <div>
+        <p>Using this model, I tried to evaluate some hands on my own, which then quickly led to some trouble, best exemplified by the problem below:</p>
+        <table>
+            <tr>
+                <td>
+                    <p class="caption">Hand 3</p>
+                </td>
+                <td>
+                    <p class="caption">Score: 4.0</p>
+                </td>
+                <td class="left-border-div-cell">
+                    <table id="hand3" ></table>
+                </td>
+                
+            </tr>
+            <tr>
+                <td>
+                    <p class="caption">Hand 4</p>
+                </td>
+                <td>
+                    <p class="caption">Score: 4.0</p>
+                </td>
+                <td class="left-border-div-cell">
+                    <table id="hand4"></table>
+                </td>
+                
+            </tr>
+        </table>
+        <p>The two hands above are given the same score when using our chart above. However, upon quick inspection one would realise the second hand
+            has much lower playability compared to the first one. This is especially easy to spot when an additional useful tile is drawn.
+        </p>
+        <table>
+        <tr>
+            <td>
+                <p class="caption">Hand 4.2</p>
+            </td>
+            <td>
+                <p class="caption">Score: 4.5</p>
+            </td>
+            <td class="left-border-div-cell">
+                <table id="hand4-2"></table>
+            </td>
+            
+        </tr>
+        <tr>
+            <td>
+                <p class="caption">Hand 4.3</p>
+            </td>
+            <td>
+                <p class="caption">Score: 4.0</p>
+            </td>
+            <td class="left-border-div-cell">
+                <table id="hand4-3"></table>
+            </td>
+            
+        </tr>
+        </table>
+        <p>
+            Even though we gained a complete set and got closer to winning, our score is still the same, giving us the illusion that we aren't in a better situation.
+            Hence, an adjustment is made to our model/system. Instead of valuing complete sets of three as 1.0 point, we value them at 2.0 points instead. This gives much
+            higher priority to complete sets, which is inline with mahjong strategies.
+        </p>
+        
+    </div>
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+
+</body>
+
+<script src="../scripts/val.js" type="module"></script>
+</html>

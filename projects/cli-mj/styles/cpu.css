@@ -1,0 +1,24 @@
+.hand td{
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+
+.hand table td{
+    padding: 0;
+}
+
+.centred {
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+.resultsTable table td{
+    padding: 0;
+    border: 0;
+}
+
+.resultsTable table{
+    margin-left: auto;
+    margin-right: auto;
+}

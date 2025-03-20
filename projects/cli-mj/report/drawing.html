@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawing</title>
+    <!--Ubunutu font configs-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    
+    <link href="/index-style.css" rel="stylesheet">
+    <link href="../styles/cli.css" rel="stylesheet">
+    <link href="../styles/drawing.css" rel="stylesheet">
+</head>
+<body>
+    <div class="nav-div">
+        <nav>
+            <a href="/"><span class="icon">..ico</span></a>
+            <a href="/resources/"><button><img src="/media/file.png" height="16vh">  ./Files</button></a>
+            <a href="/projects/"><button><img src="/media/file.png" height="16vh">  ./projects</button></a>
+        </nav>
+    </div>
+    <div>
+        <h1>cli-mj</h1>
+        <h2>Drawing</h2>
+        <p>The question of how to draw is equivalent to the question of which tile to discard. Inherently, mahjong is a game about probability. The tile
+            you next draw is essentially random from a selection. We do not know what is in the selection, but we know which tiles are not in the selection.
+            Using the information, we can construct a model that maximises the chance of drawing it a useful tile on the next go. In order to accomplish this,
+            we must first identify what tiles are useful.
+        </p>
+    </div>
+    <div>
+        <h2>Usefulness (Partial sets)</h2>
+        <p>The most useful set of tiles is the set of tiles which are already complete, hence we will never throw them away. With this in mind, we can rank our tiles based on how likely
+            they are to form a full set, which ties back to the partial set concept mentioned in the hand valuation section. To save time, we will only compute the usefulness of
+            partial sets and singluar tiles, since realistically we are only choosing from this group. The useful tiles for each type of partial set is shown below.
+        </p>
+
+        <table class="resultsTable">
+            <th>
+                <td>
+                    Partial Set
+                </td>
+                <td>
+                    Useful Tiles
+                </td>
+                <td>
+                    Usefulness u-formula
+                </td>
+            </th>
+            <tr>
+                <td>
+                    Open Straight
+                </td>
+                <td>
+                    <table class="tileDisplay" id="os1"></table>
+                </td>
+                <td>
+                    <table class="tileDisplay" id="os1-u"></table>
+                </td>
+                <td rowspan="3"> $$ u_p = \sum_t{4-c_t} $$</td>
+            </tr>
+            <tr>
+                <td>
+                    Hole
+                </td>
+                <td>
+                    <table class="tileDisplay" id="kl1"></table>
+                </td>
+                <td>
+                    <table class="tileDisplay" id="kl1-u"></table>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    Edge Straight
+                </td>
+                <td>
+                    <table class="tileDisplay" id="es1"></table>
+                </td>
+                <td>
+                    <table class="tileDisplay" id="es1-u"></table>
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    Pair
+                </td>
+                <td>
+                    <table class="tileDisplay" id="pc1"></table>
+                </td>
+                <td>
+                    <table class="tileDisplay" id="pc1-u"></table>
+                </td>
+                <td> $$ u_p = 4 \cdot \sum_t{4-c_t} $$</td>
+            </tr>
+        </table>
+
+        <p>c<sub>t</sub> is given by count of the tile t in the known domain. The known domain is set as the tiles that the player can see, so it includes all discards
+            the player's current hand and displayed tiles from everyone. The first curious part will be the 4 factor for pairs, this is mainly to compensate for the fact that
+            pairs' max c<sub>t</sub> value is 2 with 2 tiles already in the player's hand, and that the usefulness of a pair is special since the third tile can be obtained
+            from any player who discards it. This is in contrast to the other three partial sets, where the last tile can only be obtained by yourself, or from the previous player. 
+        </p>
+    </div>
+    <div>
+        <h2>Usefulness (Singulars)</h2>
+        <p>For a singular tile to become a completed set, it must first go through the partial set phase. Hence, here we will determine scores
+            for singular tiles based on how likely they are to create partial sets, with additional weights for each type of partial sets. 
+        </p>
+
+        <table class="resultsTable">
+            <th>
+                <td colspan="4">Constructing</td>
+            </th>
+            <tr>
+                <td>Tile</td>
+                <td>Open Straight</td>
+                <td>Hole</td>
+                <td>Edge Straight</td>
+                <td>Pair</td>
+            </tr>
+            <tr>
+                <td><table class="tileDisplay" id="thinking1"></table></td>
+                <td><table class="tileDisplay" id="os2"></table></td>
+                <td><table class="tileDisplay" id="kl2"></table></td>
+                <td>N/A</td>
+                <td><table class="tileDisplay" id="pc2"></table></td>
+            </tr>
+            <tr>
+                <td>Weight</td>
+                <td>1.0</td>
+                <td>0.5</td>
+                <td>1.0</td>
+                <td>2.0</td>
+            </tr>
+        </table>
+        
+        <br>
+
+        <center>$$ u_s = \sum_t{w_t c_t} $$</center>
+        
+        <p class="caption"> *With w<sub>t</sub> corresponding to the weight and c<sub>t</sub> defined as above.</p>
+        <p>Again, due to the usefulness of each type of partial tile, we will assign weights to the different tiles when calculating the usefulness
+            of the singular tile. (see above) You may see the edge straight being given a weight of 1.0, which does not correspond to its actual usefulness.
+            This is partly due to an oversight I had. However, from my testing, this model did end up producing reasonable moves, so the effect of the weight is most
+            definitely negligible. This phenomenon can be accounted for by considering that 1/9 tiles have 1 less hole and straight tile to look for, which automatically gives 1/9 tiles
+            a lower score right out of the gate. At the end of the day, we only need to discard the most useless tile, rather than calculate the value for each tile, so
+            this model suffices for that purpose.
+        </p>
+        <p>In the program, mahjong tiles are stored as integers, with the tens digit corresponding to the suit (1,2,3 - Normal suits, 4 - Lucky Tiles), and the unit digit
+            corresponding to the number of the tile (e.g. 5 of cartons is stored as 35). </p>
+        
+        <p>For reference, the code used for the model does exclude the non-existent 0-ending tiles.</p></p>
+            
+    </div>
+
+    <div class="code">
+        <p>
+        def usefulness_ss(singles:list, knownPile: list): <br>
+        ssdict = {} <br>
+        for s in singles: <br><br>
+
+        if s > 40:<br>
+        &nbsp;&nbsp;    # only pairs for LT <br>
+        &nbsp;&nbsp;    ssdict[s] = 4 - knownPile.count(s) <br>
+        &nbsp;&nbsp;    continue <br><br>
+        else: <br>
+        &nbsp;&nbsp;    # Pair <br>
+        &nbsp;&nbsp;    ssdict[s] = 4 - knownPile.count(s) <br><br>
+        &nbsp;&nbsp;    # Applies to all non 9 ending tiles <br>
+        &nbsp;&nbsp;     if s%10 != 9: <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;       ssdict[s] += 4 - knownPile.count(s+1) <br>
+        &nbsp;&nbsp;    # Applies to all non 1 ending tiles <br>
+        &nbsp;&nbsp;    if s%10 != 1:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;        ssdict[s] += 4 - knownPile.count(s-1) <br>
+            <br>
+        &nbsp;&nbsp;    # Kalongs<br>
+            <br>
+        &nbsp;&nbsp;    if int((s-2)/10) == int(s/10):<br>
+        &nbsp;&nbsp; &nbsp;&nbsp;       ssdict[s] += (4 - knownPile.count(s-2)) * 0.5<br>
+
+        &nbsp;&nbsp;    if int((s+2)/10) == int(s/10):<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;      ssdict[s] += (4 - knownPile.count(s+2)) * 0.5<br>
+                <br>
+            </p>
+    return ssdict
+    </div>
+
+    <div>
+        <h2>Deciding discards</h2>
+        <p>With a way to compare the (realtive) value of each tile, whether in a partial set or as a singular, we can use the following process to maximise our chances.
+            We first would not throw away completed sets, as well as any partial sets with at least 1 tile available to become a full set. If there is a partial set with 0 future,
+            (e.g. if we have tiles 21,22 but all the 23 tiles are gone, see below for pictures) then we would extract the most useless tile (when considered as a singular) in there and discard it.
+            Otherwise, we look at our singular tiles and throw away the least useful one. If we are stuck in a situation with no singular tiles, (see below for another example) then we would
+            discard the most useless single tile of our most useless partial set. This process is illustrated in more detail with the flowchart.
+        </p>
+
+        <div class="centred-div">
+            <p class="caption">A partial set with no future</p>
+            <table class="centred-div" id="deadset1"></table>
+            <div class="end-of-content-bar"></div>
+            <p class="caption">A hand with no singular tiles</p>
+            <table class="centred-div" id="noSingulars"></table>
+            <div class="end-of-content-bar"></div>
+            <p>Flowchart</p>
+            <!-- draw.io diagram -->
+            <div class="flowchart">
+                <iframe frameborder="0" style="width:100%;height:463px;" src="https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1#R%3Cmxfile%3E%3Cdiagram%20name%3D%22Page-1%22%20id%3D%22tp-cYqD6hhJ0-dtxesA0%22%3E3Vvbkto4EP0aHoey5AvwGGZgdquSbGqp1GYehS1s7dqWI8sD5OtXwvLdAYcBj50nrNbV3ee0Wm0x0R%2BDwzNDkfeJOtifQM05TPSnCYTAWBjiR0qOqcSCZipwGXFUo0KwIT%2BwEmpKmhAHx5WGnFKfk6gqtGkYYptXZIgxuq8221G%2FOmuEXNwQbGzkN6X%2FEId7qXRuaoX8D0xcL5sZaKomQFljJYg95NB9SaSvJvojo5SnT8HhEftSeZle0n7rn9TmC2M45F06GOs%2FV%2Bj7y%2Bv2FYf7579BBN3gQY3yivxEvfAEWr4Yb7mjYlihMGSnFdb3RK50%2BXWbhDwpytK2iKMH2f4hZnalsce5tNMHuSq4lk3iqUup62MUkXhq00CI7Vg0We9QQHwJkuYElit%2FNxwxnq1OjZbVKQ3zY2Y2jwe%2BeAKizkGxh6UONFHYe4TjTZS%2B1F5AVsiEYSJZDA6uxPDU2TnTOJ2sruFMXZhxfCiJlMafMQ0wZ0fRRNUayvgK%2FXl5X8KSEnklGOlKhhR63XzgwsDiQdn4F%2Bw9a2gKOwLvqkgZ96hLQ%2BSvCumS0SR0cg0WbT5SGikd%2F4s5PyryooTTk%2BlzC%2BAD4d9Kzy9yqKmpSk8HNfKpcMwKoXjdb%2BVCqZcsFt1OpazfT20W04QpKLerRlfeBTEX8zPtrLSd1NtZBDDsI05eq37k5gbVb0DglENrEjqp6jhBct4Y81gu%2BSSOSegmPmJxVwZmrIoYtbFkeCv3SijZIvs%2F94S1vxLukxAr%2BQ1YCKwaDbNNqERDAFt4aN2Lh8ZoeCgKXzAj4rUxa3BzqoFFlZ%2FGAl5g6KlUH%2FJ62mZBwSXa6oOi7eI97V%2FY%2FKVs8oH4YaujQeeDMihcXHLE946Sunv6F9zZi0vtfkRbEdRXkIR84obi2RbWlRxeSl9MRNT8QVUExHFS0OKY%2FEDb03gSFxEl4vXk4OZyYj61IuUcYxpOPw%2F91SSV6LptM3gQTirt2BkZaqwvcu2lgWB1U6ntFXS3EztoA1j5gq7HGjCH4z3AWe9xfy8AjGG5gXnDDXymA2ZVBqXb0GpmWm9j1v25Y43HTX%2BNsS8j51pMLsF%2BIDHv7MOZR4Nt0iECv0GkrcNapA1aIu1ZS6Q9v1ekDUBDIUMNtXsPteZdnaw2KCfb9LGDTVqt5CIRx2LCJMa7xA9TRtNd6UwtTUB8nMu5h5ukH9%2Bp26wlv4DeTH4Bo89Td4bjMXj%2FJxLbiMnUS0BjnuJHbQcSLGMExAx2AESvaRgwawFE%2F7vF9R48C38vu%2FCBpS0vfngYDhNHeVzOkf3mwF6b6qB60gVvC%2FKzAwPQ20a9%2FxEAjub43H9E2NmfwGGdu%2FUR7ewyITA2dwJvmSeAM918mwvpIcdmjAdQm%2BY54pQhGEOCQG%2BLAftNEMzfczu4LkFQ7AD5JnKf7aBzGnZYGQJwMc032hTB%2BI599TyA3nIJpuc8wMWPdQOCh7x%2BMa5LT7Oawc2mvXu99JTfwBtAwN%2F1a3vVw58P%2BUFeecNrFVpXz78YlOeH73rD7Vdsfb1t4M3vsrSf0GfzWr5uUWNoCg7V6w4H9VtcbhvmLv5bJfpnoIoTo8Xh97vBw7b4b0x5Xdg5DzOse23w4rF5OJR9Pn1Lb3xdGT0d6%2FH2PekoisU%2FGFK%2FX%2FwPRF%2F9Dw%3D%3D%3C%2Fdiagram%3E%3C%2Fmxfile%3E"></iframe>
+            
+
+            </div>
+        
+    </div>
+
+    <div class="end-of-content-bar"></div>
+
+    <div id="bottom-nav">
+        <h3 id="h3_left"><< Previous</h3>
+        <h3 id="h3_right">Next >></h3>
+        <br>
+        <h4 id="h4_left"></h4>
+        <h4 id="h4_right"></h4>
+    </div>
+
+</body>
+
+
+
+
+<script src="../scripts/drawing.js" type="module"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</html>

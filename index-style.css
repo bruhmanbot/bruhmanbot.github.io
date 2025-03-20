@@ -1,0 +1,151 @@
+:root{
+    --bg-color: rgb(36, 36, 36);
+    --txt-primary-color: whitesmoke;
+    --font-default-size: 2.2vh;
+    --full-pg-padding: 15%;
+    --highlight1:rgb(41, 66, 131);
+    --highlight2: rgb(50, 99, 197);
+    --lowlight: rgb(55, 57, 64);
+}
+
+body{
+    background-color: var(--bg-color);
+    font-family: "Ubuntu", Helvetica, sans-serif;
+    font-weight: 400;
+    color: var(--txt-primary-color);
+    font-size: var(--font-default-size);
+    margin: 0px;
+    padding: 0px;
+}
+
+nav a{
+    margin: 0px;
+    color: white;
+}
+
+button{
+    padding-left: 1vw;
+    padding-right: 1vw;
+    padding-top: 0.5vh;
+    padding-bottom: 0.5vh;
+    font-family: "Ubuntu", sans-serif;
+    height: 4vh;
+    background: none;
+    background-color: rgba(0,0,0,0);
+    color: var(--txt-primary-color);
+    border: 1px transparent solid;
+    font-size: var(--font-default-size);
+    text-align: center;
+    cursor: pointer;
+}
+
+button:hover{
+    background: var(--highlight1);
+    color: var(--txt-primary-color);
+    border: 1px var(--txt-primary-color) solid;
+}
+
+.nav-div{
+    background-color: var(--bg-color);
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    
+    width: 100vw;
+    height: fit-content;
+    padding: 0.6vh;
+    position: fixed;
+    top: 0px;
+    z-index: 1;
+    transition: all 0.1s linear;
+    opacity: 50%;
+    padding-top: auto;
+    padding-bottom: auto;
+    border-bottom: 2px rgb(174, 174, 174) solid;
+}
+
+.nav-div:hover{
+    opacity: 100%;
+}
+
+
+.bg-img-div{
+    position: relative;
+    top: 0vh;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    margin: 0px;
+    background: linear-gradient(65deg, rgb(38, 34, 71), rgb(25, 0, 55));
+    height: 101vh;
+    padding: 0;
+}
+
+@keyframes drop_down{
+    0%{
+        display: relative;
+        opacity: 0;
+        bottom: 2vh;
+    }
+
+    100% {
+        bottom: 0em;
+        opacity: 1;
+        display: block;
+    }
+
+}
+
+.bg-img-div h1{
+    position: relative;
+    margin: 0;
+    padding-top: 45vh;
+    line-height: 0;
+    font-size: 10vh;
+    word-spacing: 10vw;
+    animation: drop_down 0.5s ease-out;
+}
+
+.bg-img-div h2{
+    position: relative;
+    animation: drop_down 0.5s ease-out;
+}
+
+.section2-div{
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+    padding: 20vh;
+}
+
+.section2-div table{
+    width: 60vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section2-div td{
+    display: flexbox;
+    text-align: center;
+    padding: 3vh;
+}
+
+.section2-div button{
+    width: 15vw;
+    height: 6vh;
+    background-color: var(--highlight1);
+}
+
+#projects-panel{
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+}
+
+td img{
+    transition: all linear 0.1s;
+}
+
+.mj_img{
+    height: 8vh;
+}
+

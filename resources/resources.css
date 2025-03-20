@@ -1,0 +1,181 @@
+body {
+    margin-top: 8vh; /*Allow space for the navbar */
+}
+/* Put everything inside a marginned div!! */
+div {
+    margin-left: 10vw;
+    margin-right: 10vw;
+}
+
+.nav-div{
+    margin: 0;
+}
+
+div h1{
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+div h2{
+    margin: 0px;
+    margin-bottom: 1vh;
+}
+
+div h3{
+    margin: 0px;
+    margin-bottom: 1vh;
+}
+
+div p{
+    padding-top: 1vh;
+    margin-right: 1vw;
+}
+
+a{
+    text-decoration: none;
+    color: var(--txt-primary-color)
+}
+.header-div{
+    position: relative;
+    border-bottom: 2px solid var(--highlight2);
+    
+}
+
+.phys-div {
+    position: relative;
+    margin-top: 0vh;
+    border-bottom: 1px solid whitesmoke;
+    transition: all linear 0.1s;
+    padding: 2vw;
+    
+}
+
+@keyframes subject_bg_anim {
+    0%{
+        width: 0%;
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 0.3;
+    }
+    100%{
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+.phys-bg-div{
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: -10vw;
+    right: 100vw;
+    bottom: 0px;
+    height: 100%;
+    width: 0%;
+    opacity: 0;
+    background-image: url('./media/proxima.png');
+    text-align: right;
+}
+
+
+
+.phys-div:hover > .phys-bg-div{
+    animation: subject_bg_anim linear 0.3s;
+    width: 100%;
+    opacity: 1;
+}
+
+.math-div {
+    position: relative;
+    margin-top: 0vh;
+    border-bottom: 1px solid white;
+    transition: all linear 0.1s;
+    padding: 2vw;
+    
+}
+
+.math-bg-div{
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: -10vw;
+    right: 100vw;
+    bottom: 0px;
+    height: 100%;
+    width: 0%;
+    opacity: 0;
+    background-image: url('./media/sine.png');
+    background-repeat: no-repeat;
+    text-align: right;
+}
+
+.math-div:hover > .math-bg-div{
+    animation: subject_bg_anim linear 0.3s;
+    width: 100%;
+    opacity: 1;
+}
+
+.chem-div {
+    position: relative;
+    margin-top: 0vh;
+    border-bottom: 1px white solid;
+    transition: all linear 0.1s;
+    padding: 2vw;
+    
+}
+
+.chem-bg-div{
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: -10vw;
+    right: 100vw;
+    bottom: 0px;
+    height: 100%;
+    width: 0%;
+    opacity: 0;
+    background-image: url('./media/benz.png');
+    
+    background-repeat: no-repeat;
+    text-align: right;
+}
+
+.chem-div:hover > .chem-bg-div{
+    animation: subject_bg_anim linear 0.3s;
+    width: 100%;
+    opacity: 1;
+}
+
+
+.eng-div {
+    position: relative;
+    margin-top: 0vh;
+
+    transition: all linear 0.1s;
+    padding: 2vw;
+    
+}
+
+.eng-bg-div{
+    position: absolute;
+    z-index: -1;
+    top: 0px;
+    left: -10vw;
+    right: 100vw;
+    bottom: 0px;
+    height: 100%;
+    width: 0%;
+    opacity: 0;
+    background-image: url('./media/retro.png');
+    background-repeat: no-repeat;
+    text-align: right;
+}
+
+.eng-div:hover > .eng-bg-div{
+    animation: subject_bg_anim linear 0.3s;
+    width: 100%;
+    opacity: 1;
+}
+
+
