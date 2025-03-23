@@ -1,0 +1,7 @@
+Choose the subject then place the file in the subject folder with the following name format:
+{Topic}_{FileName}.{file type}
+
+Invalid characters:
+_ 	: Used for separating the topic and filename
+.	: File type suffix indicator
+(space) : I'm scared spaces break everything, use hyphens (-) instead of space. The program replaces all (-) with space when displaying
